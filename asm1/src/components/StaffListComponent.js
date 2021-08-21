@@ -23,12 +23,12 @@ class StaffList extends Component {
                 <div>
                     <Card>
                         <CardBody>
-                            <CardTitle tag="h5">{staff.name}</CardTitle>
-                            <CardText>{dateFormat(staff.doB, "dd/mm/yyyy")}</CardText>
-                            <CardText>{dateFormat(staff.startDate, "dd/mm/yyyy")}</CardText>
-                            <CardText>{staff.department.name}</CardText>
-                            <CardText>{staff.annualLeave}</CardText>
-                            <CardText>{staff.overTime}</CardText>
+                            <CardTitle tag="h5">Họ và tên:{staff.name}</CardTitle>
+                            <CardText>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</CardText>
+                            <CardText>Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}</CardText>
+                            <CardText>Phòng ban: {staff.department.name}</CardText>
+                            <CardText>Số ngày nghỉ còn lại: {staff.annualLeave}</CardText>
+                            <CardText>Số ngày đã làm thêm: {staff.overTime}</CardText>
                         </CardBody>
                     </Card>
                 </div>
@@ -46,7 +46,7 @@ class StaffList extends Component {
         const STAFFS = this.props.staffs.map((staff) => {
             return (
                 <div key={staff.id} className="col col-12 col-md-6 col-lg-4">
-                    <Card tag="li" onClick={ () => this.onStaffSelected(staff) }>
+                    <Card tag="li" onClick={ () => this.onStaffSelected(staff) } className="mt-2 p-1">
                         <CardText>{staff.name}</CardText>
                     </Card>
                 </div>
@@ -57,7 +57,7 @@ class StaffList extends Component {
                 <div className="row">
                     {STAFFS}
                 </div>
-                <p>Bấm vào tên nhân viên để xem thông tin.</p>
+                <p className="mt-3">Bấm vào tên nhân viên để xem thông tin.</p>
                 
                 <div className="row">
                     <div className="col-12 col-md-6">
