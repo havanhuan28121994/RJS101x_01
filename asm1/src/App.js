@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 import { STAFFS, DEPARTMENTS } from './shared/staffs';
 import StaffList from './components/StaffListComponent';
+import Header from './components/HeaderComponent'
 
 class App extends Component {
   constructor(props){
@@ -17,6 +18,7 @@ class App extends Component {
   render(){
       return (
           <div>
+            <Header />
             <StaffList staffs={this.state.staffs} departments={this.state.departments} />
           </div>
       )

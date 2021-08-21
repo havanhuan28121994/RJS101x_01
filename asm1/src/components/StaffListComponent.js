@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'
 import { Card, CardBody, CardText, CardTitle } from 'reactstrap';
 import dateFormat from 'dateformat';
 
