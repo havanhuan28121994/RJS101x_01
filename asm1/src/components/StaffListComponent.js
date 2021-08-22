@@ -47,19 +47,21 @@ class StaffList extends Component {
         }
     }
 
-    // Change state staffSelect from null to the selected staff 
+    // Change state depSelect from null to the selected department 
     onDepSelected(dep) {
         this.setState(
             {depSelected : dep}
         );
     }
 
+    // Change stat depSelected to null to show all
     showAll() {
         this.setState(
             {depSelected : null}
         );
     }
 
+    // return staffs based on selected department, all if none is selected
     renderDep(dep){
         if (dep != null) {
             return(
@@ -90,8 +92,7 @@ class StaffList extends Component {
 
     render(){
 
-        // return staffs based on selected department
-
+        // return list of departments, click to select
         const DEPS = this.props.departments.map((dep) => {
             return(
                 <div key={dep.id} className="col col-6 col-md-3 col-lg-2">
