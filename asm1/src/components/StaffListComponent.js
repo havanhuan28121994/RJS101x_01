@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, CardBody, CardImg, CardText, CardTitle } from "reactstrap";
+import { Card, CardBody, CardImg, CardText } from "reactstrap";
 import { Link } from "react-router-dom";
 
 class StaffList extends Component {
@@ -30,7 +30,7 @@ class StaffList extends Component {
         )
         .map((staff) => {
           return (
-            <Link to={`/staff/${staff.id}`} className="col col-6 col-md-4 col-lg-2 text-dark" style={{ textDecoration: 'none' }}>
+            <Link to={`/staff/${staff.id}`} className="col col-6 col-md-4 col-lg-2 text-dark mb-2" style={{ textDecoration: 'none' }}>
               <div key={staff.id}>
                 <Card
                   tag="li"
@@ -47,7 +47,7 @@ class StaffList extends Component {
     } else {
       return this.props.staffs.map((staff) => {
         return (
-          <Link to={`/staff/${staff.id}`} className="col col-6 col-md-4 col-lg-2 text-dark" style={{ textDecoration: 'none' }}>
+          <Link to={`/staff/${staff.id}`} className="col col-6 col-md-4 col-lg-2 text-dark mb-2" style={{ textDecoration: 'none' }}>
             <div key={staff.id}>
               <Card
                 tag="li"
