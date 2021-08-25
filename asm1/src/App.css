@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .nav-link{
@@ -17,7 +18,7 @@
     color: #ffffff;
 }
 
-#staff-list-h1{
+h1{
     text-align: center;
     font-size: 2rem;
 }
@@ -32,7 +33,7 @@ p{
 }
 
 @media screen and (min-width: 900px) {
-    #staff-list-h1{
+    h1{
         font-size: 3rem;
     }
 }

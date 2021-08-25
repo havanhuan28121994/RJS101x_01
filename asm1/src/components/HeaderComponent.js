@@ -48,7 +48,7 @@ class Header extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink className="nav-link" to="/salarylist">
-                    <span className="fa fa-money-check-alt pl-3"></span> Bảng lương
+                    <span className="fa fa-cc-mastercard pl-3"></span> Bảng lương
                   </NavLink>
                 </NavItem>
               </Nav>
