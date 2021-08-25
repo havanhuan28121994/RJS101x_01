@@ -31,8 +31,11 @@ class Main extends Component {
     const StaffWithId = ({ match }) => {
       return (
         <Staff
-          staffSelected={this.state.staffs.filter((staff) =>
-            staff.id === parseInt(match.params.id, 10))[0] }
+          staffSelected={
+            this.state.staffs.filter(
+              (staff) => staff.id === parseInt(match.params.id, 10)
+            )[0]
+          }
           department={this.state.departments}
         />
       );
@@ -44,7 +47,8 @@ class Main extends Component {
           <Header />
           <Switch>
             <Route
-              exact path="/"
+              exact
+              path="/"
               component={() => (
                 <StaffList
                   staffs={this.state.staffs}

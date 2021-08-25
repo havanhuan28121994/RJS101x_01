@@ -1,17 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import { Card, CardText, CardTitle, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { Link } from 'react-router-dom';
 
-class SalaryList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+const SalaryList = ({staffs}) => {
     const basicSalary = 3000000;
     const overTimeSalary = 200000;
 
-    const staffs = this.props.staffs.map((staff) => {
+    const STAFFS = staffs.map((staff) => {
       return (
         <div key={staff.id} className="col col-12 col-md-6 col-lg-4 p-2">
           <Card tag="li" className="mt-2 p-1">
@@ -41,7 +36,7 @@ class SalaryList extends Component {
           </Breadcrumb>
         </div>
         <h1 className="pb-3 text-dark">Danh sách bảng lương</h1>
-        <div className="row">{staffs}</div>
+        <div className="row">{STAFFS}</div>
         <div className="row">
           <Link to="/" className="col-12 pt-3">
             &#8592; Trở về Danh sách nhân viên
@@ -49,7 +44,6 @@ class SalaryList extends Component {
         </div>
       </div>
     );
-  }
 }
 
 export default SalaryList;

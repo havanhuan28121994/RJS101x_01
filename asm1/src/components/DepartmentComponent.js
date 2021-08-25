@@ -1,15 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { Card, CardText, CardTitle, BreadcrumbItem, Breadcrumb } from "reactstrap";
 import { DEPARTMENTS } from "../shared/staffs";
 import { Link } from 'react-router-dom';
 
-class DepList extends Component {
-  constructor(props) {
-    super(props);
-  }
+const DepList = ({departments}) => {
 
-  render() {
-    const DEP = DEPARTMENTS.map((dep) => {
+    const DEP = departments.map((dep) => {
       return (
           <div key={dep.id} className="col col-12 col-md-6 col-lg-4">
             <Card tag="li" className="mt-2 p-1">
@@ -41,7 +37,6 @@ class DepList extends Component {
         </div>
       </div>
     );
-  }
 }
 
 export default DepList;
