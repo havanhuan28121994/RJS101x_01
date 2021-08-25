@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, CardBody, CardText, CardTitle, Breadcrumb, BreadcrumbItem, CardImg } from "reactstrap";
+import { Breadcrumb, BreadcrumbItem, CardImg } from "reactstrap";
 import { Link } from 'react-router-dom';
 import dateFormat from "dateformat";
 
@@ -11,24 +11,22 @@ class Staff extends Component {
   // render staff information in case a staff is selected, return empty div if none is selected
   renderStaff(staff) {
     return (
-      <div>
-        <Card className="mb-4">
-          <CardBody>
-            <CardImg src={staff.image}></CardImg>
-            <CardTitle tag="h5">Họ và tên:{staff.name}</CardTitle>
+      <div className="mb-4 row mt-4">
+        <div className="col-lg-2"></div>
+        <div className="col-12 col-lg-3">
+          <CardImg src={staff.image} className="staff-card-img"></CardImg>
+        </div>
+        <div className="col-lg-1"></div>
+        <div className="col-12 col-lg-6">
+          <h5>Họ và tên: {staff.name}</h5>
 
-            {/* Format date to more easy-to-read date format */}
-            <CardText>
-              Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}
-            </CardText>
-            <CardText>
-              Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}
-            </CardText>
-            <CardText>Phòng ban: {staff.department.name}</CardText>
-            <CardText>Số ngày nghỉ còn lại: {staff.annualLeave}</CardText>
-            <CardText>Số ngày đã làm thêm: {staff.overTime}</CardText>
-          </CardBody>
-        </Card>
+          {/* Format date to more easy-to-read date format */}
+          <p>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</p>
+          <p>Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}</p>
+          <p>Phòng ban: {staff.department.name}</p>
+          <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
+          <p>Số ngày đã làm thêm: {staff.overTime}</p>
+        </div>
       </div>
     );
   }
@@ -44,7 +42,7 @@ class Staff extends Component {
     }
 
     return (
-      <div>
+      <div className="container">
         <div>
           <Breadcrumb
             style={{ backgroundColor: "#ffffff", padding: 0, margin: 0 }}
@@ -56,10 +54,14 @@ class Staff extends Component {
           </Breadcrumb>
         </div>
 
+        <h1 className="pb-3 text-dark">Thông tin nhân viên</h1>
+
         <div>{rendered}</div>
 
-        <div>
-          <Link to="/">Trở về Danh sách nhân viên</Link>
+        <div className="row">
+          <Link to="/" className="col-12 pt-3">
+            &#8592; Trở về Danh sách nhân viên
+          </Link>
         </div>
       </div>
     );

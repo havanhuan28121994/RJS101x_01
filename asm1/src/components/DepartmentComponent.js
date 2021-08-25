@@ -36,7 +36,6 @@ class DepList extends Component {
         <div className="row">{DEP}</div>
         <div className="row">
           <Link to="/" className="col-12 pt-3">
-            {" "}
             &#8592; Trở về Danh sách nhân viên
           </Link>
         </div>

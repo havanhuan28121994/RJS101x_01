@@ -32,8 +32,19 @@ p{
     margin: 0;
 }
 
+.staff-card-img{
+    width: 75vw;
+    margin-bottom: 2vh;
+    border-radius: 5%;
+}
+
 @media screen and (min-width: 900px) {
     h1{
         font-size: 3rem;
+    }
+
+    .staff-card-img{
+        width: 20vw;
+        margin-bottom: 0;
     }
 }
