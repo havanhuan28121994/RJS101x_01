@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Card, CardBody, CardImg, CardText, CardTitle } from "reactstrap";
 import dateFormat from "dateformat";
 import Staff from "./StaffComponent";
+import { Link } from "react-router-dom";
 
 class StaffList extends Component {
   constructor(props) {
@@ -31,7 +32,25 @@ class StaffList extends Component {
         )
         .map((staff) => {
           return (
-            <div key={staff.id} className="col col-12 col-md-6 col-lg-4">
+            <Link to={`/staff/${staff.id}`} className="col col-12 col-md-6 col-lg-4">
+              <div key={staff.id}>
+                <Card
+                  tag="li"
+                  onClick={() => this.props.onClick(staff.id)}
+                  className="mt-2 p-1"
+                >
+                  <CardImg src={staff.image}></CardImg>
+                  <CardText>{staff.name}</CardText>
+                </Card>
+              </div>
+            </Link>
+          );
+        });
+    } else {
+      return this.props.staffs.map((staff) => {
+        return (
+          <Link to={`/staff/${staff.id}`} className="col col-12 col-md-6 col-lg-4">
+            <div key={staff.id}>
               <Card
                 tag="li"
                 onClick={() => this.props.onClick(staff.id)}
@@ -41,21 +60,7 @@ class StaffList extends Component {
                 <CardText>{staff.name}</CardText>
               </Card>
             </div>
-          );
-        });
-    } else {
-      return this.props.staffs.map((staff) => {
-        return (
-          <div key={staff.id} className="col col-12 col-md-6 col-lg-4">
-            <Card
-              tag="li"
-              onClick={() => this.props.onClick(staff.id)}
-              className="mt-2 p-1"
-            >
-              <CardImg src={staff.image}></CardImg>
-              <CardText>{staff.name}</CardText>
-            </Card>
-          </div>
+          </Link>
         );
       });
     }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, CardBody, CardText, CardTitle, Breadcrumb, BreadcrumbItem } from "reactstrap";
+import { Card, CardBody, CardText, CardTitle, Breadcrumb, BreadcrumbItem, CardImg } from "reactstrap";
 import { Link } from 'react-router-dom';
 import dateFormat from "dateformat";
 
@@ -14,6 +14,7 @@ class Staff extends Component {
       <div>
         <Card className="mb-4">
           <CardBody>
+            <CardImg src={staff.image}></CardImg>
             <CardTitle tag="h5">Họ và tên:{staff.name}</CardTitle>
 
             {/* Format date to more easy-to-read date format */}
@@ -23,7 +24,6 @@ class Staff extends Component {
             <CardText>
               Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}
             </CardText>
-
             <CardText>Phòng ban: {staff.department.name}</CardText>
             <CardText>Số ngày nghỉ còn lại: {staff.annualLeave}</CardText>
             <CardText>Số ngày đã làm thêm: {staff.overTime}</CardText>
@@ -38,6 +38,7 @@ class Staff extends Component {
     let rendered = <div></div>;
     let name = <div></div>;
     if (staff) {
+      console.log(staff)
       rendered = this.renderStaff(staff);
       name = staff.name;
     }
