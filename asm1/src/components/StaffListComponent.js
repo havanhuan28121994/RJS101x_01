@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Card, CardBody, CardImg, CardText, CardTitle } from "reactstrap";
-import dateFormat from "dateformat";
-import Staff from "./StaffComponent";
 import { Link } from "react-router-dom";
 
 class StaffList extends Component {
@@ -32,7 +30,7 @@ class StaffList extends Component {
         )
         .map((staff) => {
           return (
-            <Link to={`/staff/${staff.id}`} className="col col-12 col-md-6 col-lg-4">
+            <Link to={`/staff/${staff.id}`} className="col col-6 col-md-4 col-lg-2 text-dark" style={{ textDecoration: 'none' }}>
               <div key={staff.id}>
                 <Card
                   tag="li"
@@ -49,7 +47,7 @@ class StaffList extends Component {
     } else {
       return this.props.staffs.map((staff) => {
         return (
-          <Link to={`/staff/${staff.id}`} className="col col-12 col-md-6 col-lg-4">
+          <Link to={`/staff/${staff.id}`} className="col col-6 col-md-4 col-lg-2 text-dark" style={{ textDecoration: 'none' }}>
             <div key={staff.id}>
               <Card
                 tag="li"
@@ -70,35 +68,38 @@ class StaffList extends Component {
     // return list of departments, click to select
     const DEPS = this.props.departments.map((dep) => {
       return (
-        <div key={dep.id} className="col col-6 col-md-3 col-lg-2">
-          <Card
+        <div key={dep.id}>
+          <div
             tag="li"
             onClick={() => this.onDepSelected(dep)}
-            className="mt-2 p-1 mb-3"
+            className="p-1 mb-1"
           >
-            <CardText>{dep.name}</CardText>
-          </Card>
+            <button className="btn btn-info">{dep.name}</button>
+          </div>
         </div>
       );
     });
 
     return (
       <div className="container">
-        <div className="row">{this.renderDep(this.state.depSelected)}</div>
-        <p className="mt-3">Bấm vào tên nhân viên để xem thông tin.</p>
-        <p className="mt-3">Bấm vào tên bộ phận để xem nhân viên trực thuộc.</p>
-        <div className="row">
+        <h1 id="staff-list-h1" className="pb-3 text-dark">Danh sách nhân viên</h1>
+        <div id="button-list">
           {DEPS}
-          <div className="col col-6 col-md-3 col-lg-2">
-            <Card
+          <div>
+            <div
               tag="li"
               onClick={() => this.showAll()}
-              className="mt-2 p-1 mb-3"
+              className="p-1 mb-1"
             >
-              <CardText>Tất cả</CardText>
-            </Card>
+              <button className="btn btn-info">Tất cả</button>
+            </div>
           </div>
         </div>
+        <div className="pb-2 text-dark">
+          <p> &#42; Bấm vào tên bộ phận để xem nhân viên trực thuộc.</p>
+          <p> &#42; Bấm vào tên nhân viên để xem thông tin.</p>
+        </div>
+        <div className="row">{this.renderDep(this.state.depSelected)}</div>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-body {
+* {
     margin: 0;
     padding: 0;
 }
@@ -19,4 +19,17 @@ body {
 .nav-brand{
     text-decoration: none;
     color: #ffffff;
+}
+
+#staff-list-h1{
+    text-align: center;
+}
+
+#button-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+p{
+    margin: 0;
 }
