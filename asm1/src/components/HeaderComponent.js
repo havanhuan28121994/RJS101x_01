@@ -28,17 +28,17 @@ class Header extends Component {
   render() {
     return (
       <div>
-        <Navbar className="bg-primary" expand="md">
+        <Navbar className="bg-info" expand="md">
           <div className="container">
             <NavbarToggler onClick={this.toggleNav} />
             <NavbarBrand className="mr-auto nav-brand" href="/">
-              <img src="assets/images/logo.png" height="30" width="41" alt="logo" />
+              <img src="/assets/images/logo.png" height="30" width="41" alt="logo" />
             </NavbarBrand>
             <Collapse isOpen={this.state.isNavOpen} navbar>
               <Nav navbar>
                 <NavItem>
                   <NavLink className="nav-link" to="/">
-                    <span className="fa fa-users"></span> Nhân viên
+                    <span className="fa fa-users pl-3"></span> Nhân viên
                   </NavLink>
                 </NavItem>
                 <NavItem>
