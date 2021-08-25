@@ -3,10 +3,6 @@
     padding: 0;
 }
 
-.header-h1{
-    font-size: x-large;
-}
-
 .nav-link{
     text-decoration: none;
     color: #ffffff;
@@ -23,6 +19,7 @@
 
 #staff-list-h1{
     text-align: center;
+    font-size: 2rem;
 }
 
 #button-list{
@@ -32,4 +29,10 @@
 
 p{
     margin: 0;
+}
+
+@media screen and (min-width: 900px) {
+    #staff-list-h1{
+        font-size: 3rem;
+    }
 }
