@@ -45,24 +45,22 @@ class Staff extends Component {
 
     return (
       <div>
-
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/">Nhân viên</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>
-            {name}
-          </BreadcrumbItem>
-        </Breadcrumb>
-
         <div>
-          {rendered}
+          <Breadcrumb
+            style={{ backgroundColor: "#ffffff", padding: 0, margin: 0 }}
+          >
+            <BreadcrumbItem>
+              <Link to="/">Nhân viên</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>{name}</BreadcrumbItem>
+          </Breadcrumb>
         </div>
+
+        <div>{rendered}</div>
 
         <div>
           <Link to="/">Trở về Danh sách nhân viên</Link>
         </div>
-
       </div>
     );
   }
