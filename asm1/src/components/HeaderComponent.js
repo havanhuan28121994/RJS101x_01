@@ -30,7 +30,7 @@ class Header extends Component {
       <div>
         <Navbar className="bg-info" expand="md">
           <div className="container">
-            <NavbarToggler onClick={this.toggleNav} />
+            <NavbarToggler onClick={this.toggleNav} className="fa fa-bars" />
             <NavbarBrand className="mr-auto nav-brand" href="/">
               <img src="/assets/images/logo.png" height="30" width="41" alt="logo" />
             </NavbarBrand>
@@ -43,12 +43,12 @@ class Header extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink className="nav-link" to="/departments">
-                    <span className="fa fa-address-card"></span> Phòng Ban
+                    <span className="fa fa-address-card pl-3"></span> Phòng Ban
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink className="nav-link" to="/salarylist">
-                    <span className="fa fa-money-check-alt"></span> Bảng lương
+                    <span className="fa fa-money-check-alt pl-3"></span> Bảng lương
                   </NavLink>
                 </NavItem>
               </Nav>

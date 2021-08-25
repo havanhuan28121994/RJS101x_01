@@ -12,6 +12,10 @@ body {
     color: #ffffff;
 }
 
+.nav-link:hover{
+    color: #ffffff;
+}
+
 .nav-brand{
     text-decoration: none;
     color: #ffffff;

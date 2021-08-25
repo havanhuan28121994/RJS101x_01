@@ -40,7 +40,7 @@ class Main extends Component {
 
     return (
       <BrowserRouter>
-        <div className="container">
+        <div>
           <Header />
           <Switch>
             <Route
