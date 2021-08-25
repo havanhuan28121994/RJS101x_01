@@ -1,21 +1,15 @@
-import React, { Component } from 'react';
-import { Card, CardImg, CardText } from 'reactstrap';
-import Staff from './StaffComponent';
+import React, { Component } from "react";
+import { Card, CardBody, CardImg, CardText, CardTitle } from "reactstrap";
+import dateFormat from "dateformat";
+import Staff from "./StaffComponent";
 
 class StaffList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      staffSelected: null,
       depSelected: null,
     };
-  }
-
-  onStaffSelected(staff) {
-    this.setState({
-      staffSelected: this.state.staffSelected
-    });
   }
 
   // Change state depSelect from null to the selected department
@@ -37,13 +31,13 @@ class StaffList extends Component {
         )
         .map((staff) => {
           return (
-            <div key={staff.id} className="col col-6 col-md-4 col-lg-2">
+            <div key={staff.id} className="col col-12 col-md-6 col-lg-4">
               <Card
                 tag="li"
                 onClick={() => this.props.onClick(staff.id)}
                 className="mt-2 p-1"
               >
-                <CardImg src={".." + staff.image}></CardImg>
+                <CardImg src={staff.image}></CardImg>
                 <CardText>{staff.name}</CardText>
               </Card>
             </div>
@@ -52,13 +46,13 @@ class StaffList extends Component {
     } else {
       return this.props.staffs.map((staff) => {
         return (
-          <div key={staff.id} className="col col-6 col-md-4 col-lg-2">
+          <div key={staff.id} className="col col-12 col-md-6 col-lg-4">
             <Card
               tag="li"
               onClick={() => this.props.onClick(staff.id)}
               className="mt-2 p-1"
             >
-              <CardImg src={".." + staff.image}></CardImg>
+              <CardImg src={staff.image}></CardImg>
               <CardText>{staff.name}</CardText>
             </Card>
           </div>
@@ -98,12 +92,6 @@ class StaffList extends Component {
             >
               <CardText>Tất cả</CardText>
             </Card>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-12 col-md-6">
-            <Staff staff={this.state.staffSelected} />
           </div>
         </div>
       </div>

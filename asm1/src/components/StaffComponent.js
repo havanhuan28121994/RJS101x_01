@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Card, CardBody, CardText, CardTitle, Breadcrumb, BreadcrumbItem } from "reactstrap";
-import dateFormat from 'dateformat';
+import { Card, CardBody, CardText, CardTitle } from "reactstrap";
+import dateFormat from "dateformat";
 
 class Staff extends Component {
   constructor(props) {
@@ -30,12 +29,27 @@ class Staff extends Component {
           </CardBody>
         </Card>
       </div>
-    )}
+    );
+  }
 
   render() {
+    const staff = this.props.staffSelected;
+    let rendered = <div></div>;
+    if (staff){
+      console.log(staff);
+      rendered = this.renderStaff(staff)
+    }
+
     return (
-      <div className="row">
-        {/* <Breadcrumb>
+    <div>
+      {rendered}
+    </div>);
+  }
+}
+
+export default Staff;
+
+/* <Breadcrumb>
           <BreadcrumbItem>
             <Link to="/">Nhân viên</Link>
           </BreadcrumbItem>
@@ -44,12 +58,4 @@ class Staff extends Component {
         <div>{this.renderStaff(this.props.staffSelected)}</div>
         <div>
           <Link to="/">Trở về Danh sách nhân viên</Link>
-        </div> */}
-
-        { this.props.staff }
-      </div>
-    );
-  }
-}
-
-export default Staff;
+        </div> */

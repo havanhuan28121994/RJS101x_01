@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '../App.css';
 import { STAFFS, DEPARTMENTS } from '../shared/staffs';
 import StaffList from './StaffListComponent';
+import Staff from './StaffComponent';
 import Header from './HeaderComponent'
 import DepList from './DepartmentComponent';
 import Footer from './FooterComponent';
@@ -17,18 +18,33 @@ class Main extends Component {
     this.state = {
       staffs: STAFFS,
       departments: DEPARTMENTS,
-    //  StaffSelected: null,
+      staffSelected: null,
     };
   }
 
   // Change state staffSelect from null to the selected staff
-//  onStaffSelected(staff) {
-//    this.setState({ staffSelected: this.state.staffs.filter((staff) => { staff.id === staffId})[0] });
-//  }
+  onStaffSelected(staffId) {
+    this.setState({ staffSelected: staffId });
+    console.log(staffId)
+  }
 
   render() {
     return (
-      <BrowserRouter>
+
+      <div>
+        <div>
+          <StaffList staffs={this.state.staffs} departments={this.state.departments} 
+          onClick={(staffId) => this.onStaffSelected(staffId)}
+          />
+        </div>
+        <div className="row">
+          <div className="col-12 col-md-6">
+            <Staff staffSelected={ this.state.staffs.filter((staff) => staff.id === this.state.staffSelected)[0] } />
+          </div>
+        </div>
+      </div>
+
+      /*<BrowserRouter>
         <div>
           <Header />
           <Switch>
@@ -38,7 +54,6 @@ class Main extends Component {
                 <StaffList
                   staffs={this.state.staffs}
                   departments={this.state.departments}
-                  onClick={(staffId) => this.onStaffSelected(staffId)}
                 />
               )}
             />
@@ -54,7 +69,7 @@ class Main extends Component {
           </Switch>
           <Footer />
         </div>
-      </BrowserRouter>
+      </BrowserRouter> */
     );
   }
 }
