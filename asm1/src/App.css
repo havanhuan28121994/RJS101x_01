@@ -6,3 +6,13 @@ body {
 .header-h1{
     font-size: x-large;
 }
+
+.nav-link{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.nav-brand{
+    text-decoration: none;
+    color: #ffffff;
+}

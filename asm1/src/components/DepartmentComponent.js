@@ -1,27 +1,33 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Card, CardText, CardTitle } from 'reactstrap';
 import { DEPARTMENTS } from '../shared/staffs';
 
-const DepList = () => {
+class DepList extends Component {
 
-    const DEP = DEPARTMENTS.map((dep) => {
+    constructor(props) {
+        super(props)
+    }
+    
+    render() {
+        const DEP = DEPARTMENTS.map((dep) => {
+            return (
+                <div key={dep.id} className="col col-12 col-md-6 col-lg-4">
+                    <Card tag="li" className="mt-2 p-1">
+                        <CardTitle>{dep.name}</CardTitle>
+                        <CardText>Số lượng nhân viên: {dep.numberOfStaff} </CardText>
+                    </Card>
+                </div>
+            )
+        })
+    
         return (
-            <div key={dep.id} className="col col-12 col-md-6 col-lg-4">
-                <Card tag="li" className="mt-2 p-1">
-                    <CardTitle>{dep.name}</CardTitle>
-                    <CardText>Số lượng nhân viên: {dep.numberOfStaff} </CardText>
-                </Card>
+            <div className="container">
+                <div className="row">
+                    {DEP} 
+                </div>
             </div>
         )
-    })
-
-    return (
-        <div className="container">
-            <div className="row">
-                {DEP} 
-            </div>
-        </div>
-    )
+    }
 }
 
 export default DepList;

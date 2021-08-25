@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Card, CardText, CardTitle } from 'reactstrap';
-import { STAFFS } from '../shared/staffs';
 
-const SalaryList = () => {
+class SalaryList extends Component {
 
-    const basicSalary = 3000000;
-    const overTimeSalary = 200000;
+    constructor(props) {
+        super(props)
+    }
 
-    const staffs = STAFFS.map((staff) => {
+    render(){
+        const basicSalary = 3000000;
+        const overTimeSalary = 200000;
+
+        const staffs = this.props.staffs.map((staff) => {
         return (
             <div key={staff.id} className="col col-12 col-md-6 col-lg-4">
                 <Card tag="li" className="mt-2 p-1">
@@ -19,13 +23,14 @@ const SalaryList = () => {
                 </Card>
             </div>
         )
-    })
+        })
 
-    return (
-        <div className="row">
-            {staffs}
-        </div>
-    )
+        return (
+            <div className="row">
+                {staffs}
+            </div>
+        )
+    }
 }
 
 export default SalaryList;

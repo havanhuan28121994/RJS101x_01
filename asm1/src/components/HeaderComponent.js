@@ -1,14 +1,63 @@
-import React from 'react';
-import { Navbar } from 'reactstrap';
+import React, { Component } from "react";
+import {
+  Nav,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  Collapse,
+  NavItem,
+} from "reactstrap";
+import { NavLink } from "react-router-dom";
 
-function Header(){
-    return(
-        <Navbar className="bg-primary mb-3 pt-3 pb-3" expand="md">
-            <div className="container">
-                <h1 className="text-white header-h1">Ứng dụng quản lý nhân sự v1.0</h1>
-            </div>
+class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggleNav = this.toggleNav.bind(this);
+    this.state = {
+      isNavOpen: false,
+    };
+  }
+
+  toggleNav() {
+    this.setState({
+      isNavOpen: !this.state.isNavOpen,
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <Navbar className="bg-primary" expand="md">
+          <div className="container">
+            <NavbarToggler onClick={this.toggleNav} />
+            <NavbarBrand className="mr-auto nav-brand" href="/">
+              <img src="assets/images/logo.png" height="30" width="41" alt="logo" />
+            </NavbarBrand>
+            <Collapse isOpen={this.state.isNavOpen} navbar>
+              <Nav navbar>
+                <NavItem>
+                  <NavLink className="nav-link" to="/">
+                    <span className="fa fa-users"></span> Nhân viên
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink className="nav-link" to="/departments">
+                    <span className="fa fa-address-card"></span> Phòng Ban
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink className="nav-link" to="/salarylist">
+                    <span className="fa fa-money-check-alt"></span> Bảng lương
+                  </NavLink>
+                </NavItem>
+              </Nav>
+            </Collapse>
+          </div>
         </Navbar>
-    )
+      </div>
+    );
+  }
 }
 
 export default Header;
