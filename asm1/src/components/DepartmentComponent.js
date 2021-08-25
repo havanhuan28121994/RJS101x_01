@@ -22,7 +22,7 @@ class DepList extends Component {
 
     return (
       <div className="container">
-        <h1 id="staff-list-h1" className="pb-3 text-dark">Danh sách phòng ban</h1>
+        <h1 className="pb-3 text-dark">Danh sách phòng ban</h1>
         <div className="row">{DEP}</div>
         <div className="row">
             <Link to="/" className="col-12 pt-3"> &#8592; Trở về Danh sách nhân viên</Link>

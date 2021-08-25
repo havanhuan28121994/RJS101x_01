@@ -82,7 +82,7 @@ class StaffList extends Component {
 
     return (
       <div className="container">
-        <h1 id="staff-list-h1" className="pb-3 text-dark">Danh sách nhân viên</h1>
+        <h1 className="pb-3 text-dark">Danh sách nhân viên</h1>
         <div id="button-list">
           {DEPS}
           <div>
