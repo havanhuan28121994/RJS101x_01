@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Card, CardBody, CardText, CardTitle } from "reactstrap";
+import { Card, CardBody, CardText, CardTitle, Breadcrumb, BreadcrumbItem } from "reactstrap";
+import { Link } from 'react-router-dom';
 import dateFormat from "dateformat";
 
 class Staff extends Component {
@@ -35,27 +36,37 @@ class Staff extends Component {
   render() {
     const staff = this.props.staffSelected;
     let rendered = <div></div>;
-    if (staff){
-      console.log(staff);
-      rendered = this.renderStaff(staff)
+    let name = <div></div>;
+    if (staff) {
+      rendered = this.renderStaff(staff);
+      name = staff.name;
     }
 
     return (
-    <div>
-      {rendered}
-    </div>);
+      <div>
+
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/">Nhân viên</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>
+            {name}
+          </BreadcrumbItem>
+        </Breadcrumb>
+
+        <div>
+          {rendered}
+        </div>
+
+        <div>
+          <Link to="/">Trở về Danh sách nhân viên</Link>
+        </div>
+
+      </div>
+    );
   }
 }
 
 export default Staff;
 
-/* <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/">Nhân viên</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>{this.props.staffSelected.name}</BreadcrumbItem>
-        </Breadcrumb>
-        <div>{this.renderStaff(this.props.staffSelected)}</div>
-        <div>
-          <Link to="/">Trở về Danh sách nhân viên</Link>
-        </div> */
+
