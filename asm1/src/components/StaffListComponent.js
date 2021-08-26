@@ -51,13 +51,15 @@ const StaffList = ({staffs}) => {
         <div className="pb-2 text-dark">
           <p> &#42; Bấm vào tên nhân viên để xem thông tin.</p>
         </div>
-        <div className="bg-light" style={{ 'width' : '300px' }}>
+        <div className="bg-light" style={{ 'width' : '300px' , 'position' : 'relative'}}>
           <input 
             type="text" 
             placeholder="Tìm kiếm theo tên nhân viên" 
             style={{ 'width' : '300px' }}
             onChange={ (event) => setSearch(event.target.value) }></input>
-          { search !== "" ? SEARCH : <div></div>}
+          <div style={{ 'position' : 'absolute'}}>
+            { search !== "" ? SEARCH : <div></div>}
+          </div>
         </div>
         <div className="row"> {STAFFS}</div>
       </div>

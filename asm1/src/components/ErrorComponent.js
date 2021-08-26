@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Error = () => {
     return (
         <div className="container">
-            <div>Không tìm thấy thông tin</div>
+            <h1>Không tìm thấy thông tin</h1>
             <Link to="/">Trở về màn hình Danh sách nhân viên</Link>
         </div>
     )
