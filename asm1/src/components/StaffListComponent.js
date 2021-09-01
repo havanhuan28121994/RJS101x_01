@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardImg, CardText, Form, Input, Button, Modal, ModalBody, ModalHeader, FormGroup, Label, Col, Row } from "reactstrap";
+import { Card, CardImg, CardText, Form, Input, Button, Modal, ModalBody, ModalHeader, FormGroup, Label, Col, Row, FormFeedback } from "reactstrap";
 import { Link } from "react-router-dom";
-import { LocalForm, Control } from 'react-redux-form';
-import { checkPropTypes } from "prop-types";
 
 const StaffList = ({staffs}) => {
 
@@ -13,14 +11,32 @@ const StaffList = ({staffs}) => {
     // set state to toggle add modal
     const [modalOpen, setModalOpen] = useState(false);
 
-    // set state for doB & startDate
-    const [doB, setdoB] = useState(null);
-    const [startDate, setstartDate] = useState(null);
+    // set state for new staff
+    const [New, setNew] = useState({
+      name: '',
+      doB: '',
+      startDate: '',
+      department: '',
+      salaryScale: '',
+      annualLeave: '',
+      overTime: '',
+    });
 
-    //test 
+    // set state for touch
+    const [touched, settouched] = useState({
+      name: false,
+      doB: false,
+      startDate: false,
+      department: false,
+      salaryScale: false,
+      annualLeave: false,
+      overTime: false,
+    });
+
+    // test
     useEffect(() => {
-      console.log(doB, startDate)
-    }, [doB, startDate])
+      console.log(error)
+    })
 
     // render full staff list
     const STAFFS = staffs.map((staff) => {
@@ -76,19 +92,20 @@ const StaffList = ({staffs}) => {
     }
 
     // handle add submit
-    const handleSubmit = (values) => {
-      console.log(values);
-      alert(JSON.stringify(values))
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      console.log(New);
+      alert(JSON.stringify(New))
 
       const newStaff = {
         id: staffs.length,
-        name: values.name,
-        doB: doB,
-        startDate: startDate,
-        department: values.department,
-        salaryScale: values.salaryScale,
-        annualLeave: values.annualLeave,
-        overTime: values.overTime,
+        name: New.name,
+        doB: New.doB,
+        startDate: New.startDate,
+        department: New.department,
+        salaryScale: New.salaryScale,
+        annualLeave: New.annualLeave,
+        overTime: New.overTime,
         image: '/assets/images/alberto.png'
       }
 
@@ -96,6 +113,52 @@ const StaffList = ({staffs}) => {
       console.log(staffs, newStaff);
       setModalOpen(!modalOpen)
     }
+
+    // form validation
+
+    const validate = (name, doB, startDate, department, salaryScale, annualLeave, overTime) => {
+      const error = {
+        name: '',
+        doB: '',
+        startDate: '',
+        department: '',
+        salaryScale: '',
+        annualLeave: '',
+        overTime: ''
+      }
+
+      if (touched.name) {
+        error.name = 'Yeu cau nhap'
+      }
+
+      if (touched.doB) {
+        error.doB = 'Yeu cau nhap'
+      }
+
+      if (touched.startDate) {
+        error.startDate = 'Yeu cau nhap'
+      }
+
+      if (touched.department) {
+        error.department = 'Yeu cau nhap'
+      }
+
+      if (touched.salaryScale) {
+        error.salaryScale = 'Yeu cau nhap'
+      }
+
+      if (touched.annualLeave) {
+        error.annualLeave = 'Yeu cau nhap'
+      }
+
+      if (touched.salaryScale) {
+        error.overTime = 'Yeu cau nhap'
+      }
+
+      return error;
+    } 
+
+    const error = validate(New.name, New.doB, New.startDate, New.department, New.salaryScale, New.annualLeave, New.overTime);
 
     // return part
     return (
@@ -147,53 +210,60 @@ const StaffList = ({staffs}) => {
         <Modal isOpen={modalOpen} toggle={(modalOpen) => setModalOpen(!modalOpen)} >
             <ModalHeader isOpen={modalOpen} toggle={(modalOpen) => setModalOpen(!modalOpen)}>Thêm nhân viên</ModalHeader>
             <ModalBody>
-              <LocalForm onSubmit={(values) => handleSubmit(values)}>
+              <Form onSubmit={(values) => handleSubmit(values)}>
                 <Row>
                   <Label htmlFor="name" md={2}>Ten nhan vien</Label>
                   <Col md={10}>
-                    <Control.text model=".name" id="name" name="name"></Control.text>
+                    <Input type="text" id="name" name="name" value={New.name} onChange={(event) => {return setNew({...New, name: event.target.value})}} onBlur={(touched) => {return settouched({...touched, name:true})}}></Input>
+                    <p className="text-danger">{error.name}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="doB" md={2}>Ngay sinh</Label>
                   <Col md={10}>
-                    <Input type="date" id="doB" name="doB" value={doB} onChange={(event) => setdoB(event.target.value)}></Input>
+                    <Input type="date" id="doB" name="doB" value={New.doB} onChange={(event) => {return setNew({...New, doB: event.target.value})}} onBlur={(touched) => {return settouched({...touched, doB:true})}}></Input>
+                    <p className="text-danger">{error.doB}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="startDate" md={2}>Ngay bat dau</Label>
                   <Col md={10}>
-                    <Input type="date" id="startDate" name="startDate" value={startDate} onChange={(event) => setdoB(event.target.value)}></Input>
+                    <Input type="date" id="startDate" name="startDate" value={New.startDate} onChange={(event) => {return setNew({...New, startDate: event.target.value})}} onBlur={(touched) => {return settouched({...touched, startDate:true})}}></Input>
+                    <p className="text-danger">{error.startDate}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="department" md={2}>Phong ban</Label>
                   <Col md={10}>
-                    <Control.select model=".department" id="department" name="department">
-                      <option>Sale</option>
+                    <Input type="select" id="department" name="department" value={New.department} onChange={(event) => {return setNew({...New, department: event.target.value})}} onBlur={(touched) => {return settouched({...touched, department:true})}}>
+                      <option>Sales</option>
                       <option>HR</option>
                       <option>Marketing</option>
                       <option>IT</option>
                       <option>Finance</option>
-                    </Control.select>
+                    </Input>
                   </Col>
+                  <p className="text-danger">{error.department}</p>
                 </Row>
                 <Row>
                   <Label htmlFor="salaryScale" md={2}>He so luong</Label>
                   <Col md={10}>
-                    <Control.text model=".salaryScale" id="salaryScale" name="salaryScale"></Control.text>
+                    <Input type="text" id="salaryScale" name="salaryScale" value={New.salaryScale} onChange={(event) => {return setNew({...New, salaryScale: event.target.value})}} onBlur={(touched) => {return settouched({...touched, salaryScale:true})}}></Input>
+                    <p className="text-danger">{error.salaryScale}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="annualLeave" md={2}>Nghi phep</Label>
                   <Col md={10}>
-                    <Control.text model=".annualLeave" id="annualLeave" name="annualLeave"></Control.text>
+                    <Input type="text" id="annualLeave" name="annualLeave" value={New.annualLeave} onChange={(event) => {return setNew({...New, annualLeave: event.target.value})}} onBlur={(touched) => {return settouched({...touched, annualLeave:true})}}></Input>
+                    <p className="text-danger">{error.annualLeave}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="overTime" md={2}>Lam them gio</Label>
                   <Col md={10}>
-                    <Control.text model=".overTime" id="overTime" name="overTime"></Control.text>
+                    <Input type="text" id="overTime" name="overTime" value={New.overTime} onChange={(event) => {return setNew({...New, overTime: event.target.value})}} onBlur={(touched) => {return settouched({...touched, overTime:true})}}></Input>
+                    <p className="text-danger">{error.overTime}</p>
                   </Col>
                 </Row>
                 <Row>
@@ -201,7 +271,7 @@ const StaffList = ({staffs}) => {
                     <Button md={2}>Them</Button>
                   </Col>
                 </Row>
-              </LocalForm>
+              </Form>
             </ModalBody>
         </Modal>
         </div>
