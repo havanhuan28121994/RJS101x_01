@@ -25,7 +25,7 @@ const StaffList = ({staffs}) => {
     // set array of new staffs
     const [NewStaffs, setNewStaffs] = useState([]);
     // add new staff list to the old one
-    NewStaffs.length > 0 ? staffs.concat(NewStaffs) : staffs;
+    staffs = NewStaffs.length > 0 ? staffs.concat(NewStaffs) : staffs;
 
     // set state for touch
     const [touchName, settouchName] = useState(false);
@@ -45,15 +45,12 @@ const StaffList = ({staffs}) => {
     useEffect(() => {
       // get data from local storage
       const data = localStorage.getItem('NewStaffs') ;
-      setNewStaffs(data && data.length > 0 ? JSON.parse(data): []);
-      console.log(data)
-    },[]);
+      setNewStaffs(data && data.length > 0 ? JSON.parse(data) : []);
+    }, []);
 
     // store newly added staffs to local storage
     useEffect(() => {
       localStorage.setItem('NewStaffs', JSON.stringify(NewStaffs));
-      // add new staff list to the old one
-      NewStaffs.length > 0 ? staffs.concat(NewStaffs) : staffs;
     }, [NewStaffs])
 
     // render full staff list
@@ -112,8 +109,6 @@ const StaffList = ({staffs}) => {
     // handle add submit
     const handleSubmit = (event) => {
       event.preventDefault();
-      console.log(New);
-      alert(JSON.stringify(New))
 
       const newStaff = {
         id: staffs.length,
@@ -125,12 +120,7 @@ const StaffList = ({staffs}) => {
         annualLeave: New.annualLeave,
         overTime: New.overTime,
         image: '/assets/images/alberto.png'
-      }
-
-      setNewStaffs((NewStaffs) => {return [...NewStaffs, newStaff]});
-      console.log(NewStaffs, newStaff);
-
-      setModalOpen(!modalOpen);
+      };
       setNew({
         name: '',
         doB: '',
@@ -140,6 +130,13 @@ const StaffList = ({staffs}) => {
         annualLeave: '',
         overTime: '',
       })
+
+      setNewStaffs((NewStaffs) => {return [...NewStaffs, newStaff]});
+      console.log(staffs);
+      console.log(NewStaffs);
+
+
+      setModalOpen(!modalOpen);
     }
 
     // form validation
