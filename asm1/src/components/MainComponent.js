@@ -22,9 +22,11 @@ class Main extends Component {
     };
   }
 
-  // Change state staffSelect from null to the selected staff
-  onStaffSelected(staffId) {
-    this.setState({ staffSelected: staffId });
+  componentDidMount() {
+    const data = localStorage.getItem('NewStaffs') ;
+    const DATA = data && data.length > 0 ? JSON.parse(data) : [];
+    const NewList = this.state.staffs.concat(DATA);
+    this.setState({ staffs : NewList });
   }
 
   render() {
