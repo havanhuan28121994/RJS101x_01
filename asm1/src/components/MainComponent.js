@@ -22,13 +22,6 @@ class Main extends Component {
     };
   }
 
-  componentDidMount() {
-    const data = localStorage.getItem('NewStaffs') ;
-    const DATA = data && data.length > 0 ? JSON.parse(data) : [];
-    const NewList = this.state.staffs.concat(DATA);
-    this.setState({ staffs : NewList });
-  }
-
   render() {
     const StaffWithId = ({ match }) => {
       return (
