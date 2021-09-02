@@ -22,8 +22,14 @@ const StaffList = ({staffs}) => {
       overTime: '',
     });
 
+    // set array of new staffs
+    const [NewStaffs, setNewStaffs] = useState([]);
+
+    // add new staff list to the old one
+    NewStaffs.length > 0 ? staffs.concat(NewStaffs) : staffs;
+
     // set state for touch
-    const [touched, settouched] = useState({
+    const [touch, settouch] = useState({
       name: false,
       doB: false,
       startDate: false,
@@ -33,10 +39,17 @@ const StaffList = ({staffs}) => {
       overTime: false,
     });
 
-    // test
     useEffect(() => {
-      console.log(error)
-    })
+      // get data from local storage
+      const data = localStorage.getItem('NewStaffs') ;
+      setNewStaffs(data && data.length > 0 ? JSON.parse(data): []);
+      console.log(data)
+    },[]);
+
+    // store newly added staffs to local storage
+    useEffect(() => {
+     localStorage.setItem('NewStaffs', JSON.stringify(NewStaffs));
+    }, [NewStaffs])
 
     // render full staff list
     const STAFFS = staffs.map((staff) => {
@@ -109,9 +122,19 @@ const StaffList = ({staffs}) => {
         image: '/assets/images/alberto.png'
       }
 
-      staffs.push(newStaff);
-      console.log(staffs, newStaff);
-      setModalOpen(!modalOpen)
+      setNewStaffs((NewStaffs) => {return [...NewStaffs, newStaff]});
+      console.log(NewStaffs, newStaff);
+
+      setModalOpen(!modalOpen);
+      setNew({
+        name: '',
+        doB: '',
+        startDate: '',
+        department: '',
+        salaryScale: '',
+        annualLeave: '',
+        overTime: '',
+      })
     }
 
     // form validation
@@ -127,31 +150,31 @@ const StaffList = ({staffs}) => {
         overTime: ''
       }
 
-      if (touched.name) {
+      if (touch.name && name === '') {
         error.name = 'Yeu cau nhap'
       }
 
-      if (touched.doB) {
+      if (touch.doB && doB === '') {
         error.doB = 'Yeu cau nhap'
       }
 
-      if (touched.startDate) {
+      if (touch.startDate && startDate === '') {
         error.startDate = 'Yeu cau nhap'
       }
 
-      if (touched.department) {
+      if (touch.department && department === '') {
         error.department = 'Yeu cau nhap'
       }
 
-      if (touched.salaryScale) {
+      if (touch.salaryScale && salaryScale === '') {
         error.salaryScale = 'Yeu cau nhap'
       }
 
-      if (touched.annualLeave) {
+      if (touch.annualLeave && annualLeave === '') {
         error.annualLeave = 'Yeu cau nhap'
       }
 
-      if (touched.salaryScale) {
+      if (touch.overTime && overTime === '') {
         error.overTime = 'Yeu cau nhap'
       }
 
@@ -205,6 +228,7 @@ const StaffList = ({staffs}) => {
             ? "Không tìm thấy nhân viên nào"
             : SEARCH}
         </div>
+        {/* <div className="row">{NEWSTAFFS}</div> */}
 
         <div>
         <Modal isOpen={modalOpen} toggle={(modalOpen) => setModalOpen(!modalOpen)} >
@@ -214,55 +238,55 @@ const StaffList = ({staffs}) => {
                 <Row>
                   <Label htmlFor="name" md={2}>Ten nhan vien</Label>
                   <Col md={10}>
-                    <Input type="text" id="name" name="name" value={New.name} onChange={(event) => {return setNew({...New, name: event.target.value})}} onBlur={(touched) => {return settouched({...touched, name:true})}}></Input>
+                    <Input type="text" id="name" name="name" value={New.name} onChange={(event) => {return setNew({...New, name: event.target.value})}} onBlur={(touch) => { return settouch({...touch, name:true})}}></Input>
                     <p className="text-danger">{error.name}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="doB" md={2}>Ngay sinh</Label>
                   <Col md={10}>
-                    <Input type="date" id="doB" name="doB" value={New.doB} onChange={(event) => {return setNew({...New, doB: event.target.value})}} onBlur={(touched) => {return settouched({...touched, doB:true})}}></Input>
+                    <Input type="date" id="doB" name="doB" value={New.doB} onChange={(event) => {return setNew({...New, doB: event.target.value})}} onBlur={(touch) => { return settouch({...touch, doB:true})}}></Input>
                     <p className="text-danger">{error.doB}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="startDate" md={2}>Ngay bat dau</Label>
                   <Col md={10}>
-                    <Input type="date" id="startDate" name="startDate" value={New.startDate} onChange={(event) => {return setNew({...New, startDate: event.target.value})}} onBlur={(touched) => {return settouched({...touched, startDate:true})}}></Input>
+                    <Input type="date" id="startDate" name="startDate" value={New.startDate} onChange={(event) => {return setNew({...New, startDate: event.target.value})}} onBlur={(touch) => { return settouch({...touch, startDate:true})}}></Input>
                     <p className="text-danger">{error.startDate}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="department" md={2}>Phong ban</Label>
                   <Col md={10}>
-                    <Input type="select" id="department" name="department" value={New.department} onChange={(event) => {return setNew({...New, department: event.target.value})}} onBlur={(touched) => {return settouched({...touched, department:true})}}>
+                    <Input type="select" id="department" name="department" value={New.department} onChange={(event) => {return setNew({...New, department: event.target.value})}} onBlur={(touch) => { return settouch({...touch, department:true})}}>
                       <option>Sales</option>
                       <option>HR</option>
                       <option>Marketing</option>
                       <option>IT</option>
                       <option>Finance</option>
                     </Input>
+                    <p className="text-danger">{error.department}</p>
                   </Col>
-                  <p className="text-danger">{error.department}</p>
                 </Row>
                 <Row>
                   <Label htmlFor="salaryScale" md={2}>He so luong</Label>
                   <Col md={10}>
-                    <Input type="text" id="salaryScale" name="salaryScale" value={New.salaryScale} onChange={(event) => {return setNew({...New, salaryScale: event.target.value})}} onBlur={(touched) => {return settouched({...touched, salaryScale:true})}}></Input>
+                    <Input type="text" id="salaryScale" name="salaryScale" value={New.salaryScale} onChange={(event) => {return setNew({...New, salaryScale: event.target.value})}} onBlur={(touch) => { return settouch({...touch, salaryScale:true})}}></Input>
                     <p className="text-danger">{error.salaryScale}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="annualLeave" md={2}>Nghi phep</Label>
                   <Col md={10}>
-                    <Input type="text" id="annualLeave" name="annualLeave" value={New.annualLeave} onChange={(event) => {return setNew({...New, annualLeave: event.target.value})}} onBlur={(touched) => {return settouched({...touched, annualLeave:true})}}></Input>
+                    <Input type="text" id="annualLeave" name="annualLeave" value={New.annualLeave} onChange={(event) => {return setNew({...New, annualLeave: event.target.value})}} onBlur={(touch) => { return settouch({...touch, annualLeave:true})}}></Input>
                     <p className="text-danger">{error.annualLeave}</p>
                   </Col>
                 </Row>
                 <Row>
                   <Label htmlFor="overTime" md={2}>Lam them gio</Label>
                   <Col md={10}>
-                    <Input type="text" id="overTime" name="overTime" value={New.overTime} onChange={(event) => {return setNew({...New, overTime: event.target.value})}} onBlur={(touched) => {return settouched({...touched, overTime:true})}}></Input>
+                    <Input type="text" id="overTime" name="overTime" value={New.overTime} onChange={(event) => {return setNew({...New, overTime: event.target.value})}} onBlur={(touch) => { return settouch({...touch, overTime:true})}}></Input>
                     <p className="text-danger">{error.overTime}</p>
                   </Col>
                 </Row>
