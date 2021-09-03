@@ -24,7 +24,7 @@ class Staff extends Component {
           {/* Format date to more easy-to-read date format */}
           <p>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</p>
           <p>Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}</p>
-          <p>Phòng ban: {staff.department || staff.department.name}</p>
+          <p>Phòng ban: {staff.department.name || staff.department}</p>
           <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
           <p>Số ngày đã làm thêm: {staff.overTime}</p>
         </div>
@@ -33,11 +33,12 @@ class Staff extends Component {
   }
 
   render() {
+    console.log(this.props);
     const staff = this.props.staffSelected;
+    console.log(staff);
     let rendered = <div></div>;
     let name = <div></div>;
     if (staff) {
-      console.log(staff)
       rendered = this.renderStaff(staff);
       name = staff.name;
     }

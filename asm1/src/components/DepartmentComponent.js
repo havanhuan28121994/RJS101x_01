@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, CardText, CardTitle, BreadcrumbItem, Breadcrumb } from "reactstrap";
-import { DEPARTMENTS } from "../shared/staffs";
 import { Link } from 'react-router-dom';
 
 const DepList = ({departments}) => {

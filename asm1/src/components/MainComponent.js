@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
-import { STAFFS, DEPARTMENTS } from "../shared/staffs";
 import StaffList from "./StaffListComponent";
 import Staff from "./StaffComponent";
 import Header from "./HeaderComponent";
@@ -11,15 +11,16 @@ import Footer from "./FooterComponent";
 import SalaryList from "./SalaryList";
 import Error from "./ErrorComponent";
 
+const mapStateToProps = state => {
+  return {
+    staffs : state.staffs,
+    departments : state.departments
+  }
+}
+
 class Main extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      staffs: STAFFS,
-      departments: DEPARTMENTS,
-      staffSelected: null,
-    };
 
     this.updateState = this.updateState.bind(this);
   }
@@ -27,36 +28,33 @@ class Main extends Component {
   componentDidMount() {
     const data = localStorage.getItem("Staffs");
     if (data) {
-      this.setState({ staffs: JSON.parse(data) });
+      this.props.staffs.concat(JSON.parse(data));
     } else {
-      localStorage.setItem("Staffs", JSON.stringify(STAFFS));
+      localStorage.setItem("Staffs", JSON.stringify(this.props.staffs));
     }
   }
 
   updateState(staff) {
-    const currentStaffs = this.state.staffs;
-    this.setState({
-      staffs: currentStaffs.concat([staff]),
-    });
+    const currentStaffs = this.props.staffs;
+    const FullCurrentStaffs = currentStaffs.concat([staff]);
+    this.props.staffs.concat([FullCurrentStaffs]);
     localStorage.setItem("Staffs", JSON.stringify(currentStaffs.concat([staff])));
   }
 
   render() {
     const StaffWithId = ({ match }) => {
+      const staffSelected = this.props.staffs.filter(
+        (staff) => staff.id === parseInt(match.params.id, 10)
+      )[0];
       return (
         <Staff
-          staffSelected={
-            this.state.staffs.filter(
-              (staff) => staff.id === parseInt(match.params.id, 10)
-            )[0]
-          }
-          department={this.state.departments}
+          staffSelected={staffSelected}
+          department={this.props.departments}
         />
       );
     };
 
     return (
-      <BrowserRouter>
         <div>
           <Header />
           <Switch>
@@ -65,8 +63,8 @@ class Main extends Component {
               path="/"
               component={() => (
                 <StaffList
-                  staffs={this.state.staffs}
-                  departments={this.state.departments}
+                  staffs={this.props.staffs}
+                  departments={this.props.departments}
                   updateState={(newStaff) => this.updateState(newStaff)}
                 />
               )}
@@ -74,19 +72,18 @@ class Main extends Component {
             <Route path="/staff/:id" component={StaffWithId} />
             <Route
               path="/departments"
-              component={() => <DepList departments={this.state.departments} />}
+              component={() => <DepList departments={this.props.departments} />}
             />
             <Route
               path="/salarylist"
-              component={() => <SalaryList staffs={this.state.staffs} />}
+              component={() => <SalaryList staffs={this.props.staffs} />}
             />
             <Route path="*" component={Error} />
           </Switch>
           <Footer />
         </div>
-      </BrowserRouter>
     );
   }
 }
 
-export default Main;
+export default withRouter(connect(mapStateToProps)(Main));
