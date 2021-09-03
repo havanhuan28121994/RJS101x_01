@@ -20,6 +20,25 @@ class Main extends Component {
       departments: DEPARTMENTS,
       staffSelected: null,
     };
+
+    this.updateState = this.updateState.bind(this);
+  }
+
+  componentDidMount() {
+    const data = localStorage.getItem("Staffs");
+    if (data) {
+      this.setState({ staffs: JSON.parse(data) });
+    } else {
+      localStorage.setItem("Staffs", JSON.stringify(STAFFS));
+    }
+  }
+
+  updateState(staff) {
+    const currentStaffs = this.state.staffs
+    this.setState({
+      staffs: currentStaffs.concat([staff]),
+    });
+    localStorage.setItem("Staffs", JSON.stringify(currentStaffs.concat([staff])));
   }
 
   render() {
@@ -48,7 +67,7 @@ class Main extends Component {
                 <StaffList
                   staffs={this.state.staffs}
                   departments={this.state.departments}
-                  onClick={(staffId) => this.onStaffSelected(staffId)}
+                  updateState={(newStaff) => this.updateState(newStaff)}
                 />
               )}
             />

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardImg, CardText, Form, Input, Button, Modal, ModalBody, ModalHeader, FormGroup, Label, Col, Row, FormFeedback } from "reactstrap";
+import { Card, CardImg, CardText, Form, Input, Button, Modal, ModalBody, ModalHeader, Label, Col, Row } from "reactstrap";
 import { Link } from "react-router-dom";
 
-const StaffList = ({staffs}) => {
+const StaffList = ({staffs, updateState}) => {
 
     // set state for name & search for search function
     const [Name, setName] = useState(null);
@@ -22,10 +22,11 @@ const StaffList = ({staffs}) => {
       overTime: '',
     });
 
-    // set array of new staffs
-    const [NewStaffs, setNewStaffs] = useState([]);
-    // add new staff list to the old one
-    staffs = NewStaffs.length > 0 ? staffs.concat(NewStaffs) : staffs;
+    // // set array of new staffs
+    // const [NewStaffs, setNewStaffs] = useState([]);
+
+    // // add new staff list to the old one
+    // staffs = NewStaffs.length > 0 ? [...staffs, ...NewStaffs] : staffs;
 
     // set state for touch
     const [touchName, settouchName] = useState(false);
@@ -34,24 +35,23 @@ const StaffList = ({staffs}) => {
 
     const [touchstartDate, settouchstartDate] = useState(false);
 
-    const [touchdepartment, settouchdepartment] = useState(false);
-
     const [touchsalaryScale, settouchsalaryScale] = useState(false);
 
     const [touchannualLeave, settouchannualLeave] = useState(false);
 
     const [touchoverTime, settouchoverTime] = useState(false);
 
-    useEffect(() => {
-      // get data from local storage
-      const data = localStorage.getItem('NewStaffs') ;
-      setNewStaffs(data && data.length > 0 ? JSON.parse(data) : []);
-    }, []);
+    // useEffect(() => {
+    //   // get data from local storage
+    //   const data = localStorage.getItem('NewStaffs') ;
+    //   setNewStaffs(data && data.length > 0 ? JSON.parse(data) : []);
+    // }, []);
 
-    // store newly added staffs to local storage
-    useEffect(() => {
-      localStorage.setItem('NewStaffs', JSON.stringify(NewStaffs));
-    }, [NewStaffs])
+    // // store newly added staffs to local storage
+    // useEffect(() => {
+    //   localStorage.setItem('NewStaffs', JSON.stringify(NewStaffs));
+    //   staffs = [...staffs,...NewStaffs];
+    // }, [NewStaffs])
 
     // render full staff list
     const STAFFS = staffs.map((staff) => {
@@ -104,6 +104,7 @@ const StaffList = ({staffs}) => {
         );
       })
       setSEARCH(X);
+      Name.value = '';
     }
 
     // handle add submit
@@ -121,6 +122,7 @@ const StaffList = ({staffs}) => {
         overTime: New.overTime,
         image: '/assets/images/alberto.png'
       };
+
       setNew({
         name: '',
         doB: '',
@@ -129,19 +131,25 @@ const StaffList = ({staffs}) => {
         salaryScale: '',
         annualLeave: '',
         overTime: '',
-      })
+      });
 
-      setNewStaffs((NewStaffs) => {return [...NewStaffs, newStaff]});
-      console.log(staffs);
-      console.log(NewStaffs);
+      settouchName(false);
+      settouchdoB(false);
+      settouchstartDate(false);
+      settouchsalaryScale(false);
+      settouchannualLeave(false);
+      settouchoverTime(false);
 
-
+      // setNewStaffs((NewStaffs) => [...NewStaffs, newStaff]);
+      // console.log(NewStaffs);
+      // console.log(staffs);
       setModalOpen(!modalOpen);
+
+      updateState(newStaff)
     }
 
     // form validation
-
-    const validate = (name, doB, startDate, department, salaryScale, annualLeave, overTime) => {
+    const validate = (name, doB, startDate, salaryScale, annualLeave, overTime) => {
       const error = {
         name: '',
         doB: '',
@@ -168,10 +176,6 @@ const StaffList = ({staffs}) => {
         error.startDate = 'Yêu cầu nhập'
       }
 
-      if (touchdepartment && department === '') {
-        error.department = 'Yêu cầu nhập'
-      }
-
       if (touchsalaryScale && salaryScale === '') {
         error.salaryScale = 'Yêu cầu nhập'
       }
@@ -192,14 +196,14 @@ const StaffList = ({staffs}) => {
         error.overTime = 'Yêu cầu nhập'
       }
 
-      if (touchannualLeave && isNaN(overTime)) {
+      if (touchoverTime && isNaN(overTime)) {
         error.overTime = 'Yêu cầu nhập số'
       }
 
       return error;
     } 
 
-    const error = validate(New.name, New.doB, New.startDate, New.department, New.salaryScale, New.annualLeave, New.overTime);
+    const error = validate(New.name, New.doB, New.startDate, New.salaryScale, New.annualLeave, New.overTime);
 
     // return part
     return (
@@ -246,13 +250,12 @@ const StaffList = ({staffs}) => {
             ? "Không tìm thấy nhân viên nào"
             : SEARCH}
         </div>
-        {/* <div className="row">{NEWSTAFFS}</div> */}
 
         <div>
         <Modal isOpen={modalOpen} toggle={(modalOpen) => setModalOpen(!modalOpen)} >
             <ModalHeader isOpen={modalOpen} toggle={(modalOpen) => setModalOpen(!modalOpen)}>Thêm nhân viên</ModalHeader>
             <ModalBody>
-              <Form onSubmit={(values) => handleSubmit(values)}>
+              <Form onSubmit={(values) => {handleSubmit(values)}}>
                 <Row className="mt-2">
                   <Label htmlFor="name" md={3}>Tên nhân viên: </Label>
                   <Col md={9}>
@@ -277,7 +280,7 @@ const StaffList = ({staffs}) => {
                 <Row className="mt-2">
                   <Label htmlFor="department" md={3}>Phòng ban: </Label>
                   <Col md={9}>
-                    <Input type="select" id="department" name="department" value={New.department} onChange={(event) => {return setNew({...New, department: event.target.value})}} onBlur={(touch) => { return settouchdepartment(true)}}>
+                    <Input type="select" id="department" name="department" value={New.department} onChange={(event) => {return setNew({...New, department: event.target.value})}}>
                       <option>Sales</option>
                       <option>HR</option>
                       <option>Marketing</option>
@@ -310,7 +313,7 @@ const StaffList = ({staffs}) => {
                 </Row>
                 <Row className="mt-2">
                   <Col md={{ size: 3, offset: 3}}>
-                    <Button>Thêm</Button>
+                    <Button type="submit">Thêm</Button>
                   </Col>
                 </Row>
               </Form>
