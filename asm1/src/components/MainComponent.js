@@ -23,27 +23,32 @@ class Main extends Component {
     super(props);
 
     this.updateState = this.updateState.bind(this);
+
+    this.state = {
+      staffs : this.props.staffs
+    }
   }
 
   componentDidMount() {
     const data = localStorage.getItem("Staffs");
     if (data) {
-      this.props.staffs.concat(JSON.parse(data));
+      this.setState({ staffs: JSON.parse(data) });
     } else {
       localStorage.setItem("Staffs", JSON.stringify(this.props.staffs));
     }
   }
 
   updateState(staff) {
-    const currentStaffs = this.props.staffs;
-    const FullCurrentStaffs = currentStaffs.concat([staff]);
-    this.props.staffs.concat([FullCurrentStaffs]);
+    const currentStaffs = this.state.staffs;
+    this.setState({
+      staffs: currentStaffs.concat([staff]),
+    });
     localStorage.setItem("Staffs", JSON.stringify(currentStaffs.concat([staff])));
   }
 
   render() {
     const StaffWithId = ({ match }) => {
-      const staffSelected = this.props.staffs.filter(
+      const staffSelected = this.state.staffs.filter(
         (staff) => staff.id === parseInt(match.params.id, 10)
       )[0];
       return (
@@ -63,7 +68,7 @@ class Main extends Component {
               path="/"
               component={() => (
                 <StaffList
-                  staffs={this.props.staffs}
+                  staffs={this.state.staffs}
                   departments={this.props.departments}
                   updateState={(newStaff) => this.updateState(newStaff)}
                 />

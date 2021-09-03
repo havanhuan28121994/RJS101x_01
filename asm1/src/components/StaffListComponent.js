@@ -96,7 +96,6 @@ const StaffList = ({ staffs, updateState }) => {
       overTime: values.overTime,
       image: "/assets/images/alberto.png",
     };
-    console.log(newStaff)
 
     setModalOpen(!modalOpen);
 
