@@ -34,7 +34,7 @@ class Main extends Component {
   }
 
   updateState(staff) {
-    const currentStaffs = this.state.staffs
+    const currentStaffs = this.state.staffs;
     this.setState({
       staffs: currentStaffs.concat([staff]),
     });
