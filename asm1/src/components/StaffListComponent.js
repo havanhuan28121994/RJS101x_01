@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardImg,
   CardText,
-  Form,
   Input,
   Button,
   Modal,
@@ -14,56 +13,19 @@ import {
   Row,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Control, LocalForm, Error} from 'react-redux-form';
 
 const StaffList = ({ staffs, updateState }) => {
   // set state for name & search for search function
   const [Name, setName] = useState(null);
   const [SEARCH, setSEARCH] = useState(null);
 
+  // set state for doB & startDate
+  const [doB, setdoB] = useState('');
+  const [startDate, setstartDate] = useState('');
+
   // set state to toggle add modal
   const [modalOpen, setModalOpen] = useState(false);
-
-  // set state for new staff
-  const [New, setNew] = useState({
-    name: "",
-    doB: "",
-    startDate: "",
-    department: "Sales",
-    salaryScale: "",
-    annualLeave: "",
-    overTime: "",
-  });
-
-  // // set array of new staffs
-  // const [NewStaffs, setNewStaffs] = useState([]);
-
-  // // add new staff list to the old one
-  // staffs = NewStaffs.length > 0 ? [...staffs, ...NewStaffs] : staffs;
-
-  // set state for touch
-  const [touchName, settouchName] = useState(false);
-
-  const [touchdoB, settouchdoB] = useState(false);
-
-  const [touchstartDate, settouchstartDate] = useState(false);
-
-  const [touchsalaryScale, settouchsalaryScale] = useState(false);
-
-  const [touchannualLeave, settouchannualLeave] = useState(false);
-
-  const [touchoverTime, settouchoverTime] = useState(false);
-
-  // useEffect(() => {
-  //   // get data from local storage
-  //   const data = localStorage.getItem('NewStaffs') ;
-  //   setNewStaffs(data && data.length > 0 ? JSON.parse(data) : []);
-  // }, []);
-
-  // // store newly added staffs to local storage
-  // useEffect(() => {
-  //   localStorage.setItem('NewStaffs', JSON.stringify(NewStaffs));
-  //   staffs = [...staffs,...NewStaffs];
-  // }, [NewStaffs])
 
   // render full staff list
   const STAFFS = staffs.map((staff) => {
@@ -116,116 +78,26 @@ const StaffList = ({ staffs, updateState }) => {
   };
 
   // handle add submit
-  const handleSubmit = (event) => {
-    event.preventDefault();
+   const handleSubmit = (values) => {
+     alert(JSON.stringify(values))
 
     const newStaff = {
       id: staffs.length,
-      name: New.name,
-      doB: New.doB,
-      startDate: New.startDate,
-      department: New.department,
-      salaryScale: New.salaryScale,
-      annualLeave: New.annualLeave,
-      overTime: New.overTime,
+      name: values.name,
+      doB: doB,
+      startDate: startDate,
+      department: values.department,
+      salaryScale: values.salaryScale,
+      annualLeave: values.annualLeave,
+      overTime: values.overTime,
       image: "/assets/images/alberto.png",
     };
+    console.log(newStaff)
 
-    setNew({
-      name: "",
-      doB: "",
-      startDate: "",
-      department: "",
-      salaryScale: "",
-      annualLeave: "",
-      overTime: "",
-    });
-
-    settouchName(false);
-    settouchdoB(false);
-    settouchstartDate(false);
-    settouchsalaryScale(false);
-    settouchannualLeave(false);
-    settouchoverTime(false);
-
-    // setNewStaffs((NewStaffs) => [...NewStaffs, newStaff]);
-    // console.log(NewStaffs);
-    // console.log(staffs);
     setModalOpen(!modalOpen);
 
     updateState(newStaff);
-  };
-
-  // form validation
-  const validate = (
-    name,
-    doB,
-    startDate,
-    salaryScale,
-    annualLeave,
-    overTime
-  ) => {
-    const error = {
-      name: "",
-      doB: "",
-      startDate: "",
-      department: "",
-      salaryScale: "",
-      annualLeave: "",
-      overTime: "",
-    };
-
-    if (touchName && name === "") {
-      error.name = "Yêu cầu nhập";
-    }
-
-    if (touchName && name.length > 15) {
-      error.name = "Nhập tên dưới 15 ký tự";
-    }
-
-    if (touchdoB && doB === "") {
-      error.doB = "Yêu cầu nhập";
-    }
-
-    if (touchstartDate && startDate === "") {
-      error.startDate = "Yêu cầu nhập";
-    }
-
-    if (touchsalaryScale && salaryScale === "") {
-      error.salaryScale = "Yêu cầu nhập";
-    }
-
-    if (touchsalaryScale && isNaN(salaryScale)) {
-      error.salaryScale = "Yêu cầu nhập số";
-    }
-
-    if (touchannualLeave && annualLeave === "") {
-      error.annualLeave = "Yêu cầu nhập";
-    }
-
-    if (touchannualLeave && isNaN(annualLeave)) {
-      error.annualLeave = "Yêu cầu nhập số";
-    }
-
-    if (touchoverTime && overTime === "") {
-      error.overTime = "Yêu cầu nhập";
-    }
-
-    if (touchoverTime && isNaN(overTime)) {
-      error.overTime = "Yêu cầu nhập số";
-    }
-
-    return error;
-  };
-
-  const error = validate(
-    New.name,
-    New.doB,
-    New.startDate,
-    New.salaryScale,
-    New.annualLeave,
-    New.overTime
-  );
+   };
 
   // return part
   return (
@@ -286,7 +158,79 @@ const StaffList = ({ staffs, updateState }) => {
       </div>
 
       {/* Modal */}
+
       <div>
+      <Modal isOpen={modalOpen}
+          toggle={(modalOpen) => setModalOpen(!modalOpen)} >
+            <ModalHeader isOpen={modalOpen} toggle={(modalOpen) => setModalOpen(!modalOpen)}>Thêm nhân viên</ModalHeader>
+            <ModalBody>
+              <LocalForm onSubmit={(values) => {
+                handleSubmit(values);
+              }}>
+                <Row className="mt-2">
+                  <Label htmlFor="name" md={3}>Ten nhan vien</Label>
+                  <Col md={9}>
+                    <Control.text model=".name" id="name" name="name" className="form-control"></Control.text>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Label htmlFor="doB" md={3}>Ngay sinh</Label>
+                  <Col md={9}>
+                    <Input type="date" id="doB" name="doB" value={doB}
+                    onChange={(event) => {
+                      return setdoB(event.target.value);
+                    }}></Input>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Label htmlFor="startDate" md={3}>Ngay bat dau</Label>
+                  <Col md={9}>
+                    <Input type="date" id="startDate" name="startDate" value={startDate}
+                    onChange={(event) => {
+                      return setstartDate(event.target.value);
+                    }}></Input>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Label htmlFor="department" md={3}>Phong ban</Label>
+                  <Col md={9}>
+                    <Control.select model=".department" id="department" name="department" className="form-control" defaultValue="Sale">
+                      <option>Sale</option>
+                      <option>HR</option>
+                      <option>Marketing</option>
+                      <option>IT</option>
+                      <option>Finance</option>
+                    </Control.select>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Label htmlFor="salaryScale" md={3}>He so luong</Label>
+                  <Col md={9}>
+                    <Control.text model=".salaryScale" id="salaryScale" name="salaryScale" className="form-control"></Control.text>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Label htmlFor="annualLeave" md={3}>Nghi phep</Label>
+                  <Col md={9}>
+                    <Control.text model=".annualLeave" id="annualLeave" name="annualLeave" className="form-control"></Control.text>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Label htmlFor="overTime" md={3}>Lam them gio</Label>
+                  <Col md={9}>
+                    <Control.text model=".overTime" id="overTime" name="overTime" className="form-control"></Control.text>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                <Col md={{ size: 3, offset: 3 }}>
+                  <Button type="submit" className="btn btn-info">Thêm</Button>
+                </Col>
+              </Row>
+              </LocalForm>
+            </ModalBody>
+        </Modal>
+      </div>
+      {/* <div>
         <Modal
           isOpen={modalOpen}
           toggle={(modalOpen) => setModalOpen(!modalOpen)}
@@ -460,7 +404,7 @@ const StaffList = ({ staffs, updateState }) => {
             </Form>
           </ModalBody>
         </Modal>
-      </div>
+      </div> */}
     </div>
   );
 };
