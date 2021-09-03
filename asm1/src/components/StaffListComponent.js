@@ -13,7 +13,12 @@ import {
   Row,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-import { Control, LocalForm, Error} from 'react-redux-form';
+import { Control, LocalForm, Errors} from 'react-redux-form';
+
+// form validation 
+const required = (value) => value && value.length > 0 ;
+const maxlength = (len) => (value) => !(value) || (value.length <= len);
+const isNumber = (value) => !(value) ||!isNaN(Number(value));
 
 const StaffList = ({ staffs, updateState }) => {
   // set state for name & search for search function
@@ -79,7 +84,6 @@ const StaffList = ({ staffs, updateState }) => {
 
   // handle add submit
    const handleSubmit = (values) => {
-     alert(JSON.stringify(values))
 
     const newStaff = {
       id: staffs.length,
@@ -105,7 +109,6 @@ const StaffList = ({ staffs, updateState }) => {
       <h1 className="pb-3 text-dark">Danh sách nhân viên</h1>
 
       <div className="row mb-1">
-
         {/* Add new button */}
         <div className="col-md-1 mt-1">
           <Button
@@ -129,12 +132,15 @@ const StaffList = ({ staffs, updateState }) => {
               }}
               className="form-control mr-2 mb-1 mt-1"
             ></input>
-            <button type="submit" onClick={(event) => handleSearch(event, Name)} className="btn btn-info">
+            <button
+              type="submit"
+              onClick={(event) => handleSearch(event, Name)}
+              className="btn btn-info"
+            >
               Tìm
             </button>
           </form>
         </div>
-
       </div>
 
       <div>
@@ -160,77 +166,6 @@ const StaffList = ({ staffs, updateState }) => {
       {/* Modal */}
 
       <div>
-      <Modal isOpen={modalOpen}
-          toggle={(modalOpen) => setModalOpen(!modalOpen)} >
-            <ModalHeader isOpen={modalOpen} toggle={(modalOpen) => setModalOpen(!modalOpen)}>Thêm nhân viên</ModalHeader>
-            <ModalBody>
-              <LocalForm onSubmit={(values) => {
-                handleSubmit(values);
-              }}>
-                <Row className="mt-2">
-                  <Label htmlFor="name" md={3}>Ten nhan vien</Label>
-                  <Col md={9}>
-                    <Control.text model=".name" id="name" name="name" className="form-control"></Control.text>
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Label htmlFor="doB" md={3}>Ngay sinh</Label>
-                  <Col md={9}>
-                    <Input type="date" id="doB" name="doB" value={doB}
-                    onChange={(event) => {
-                      return setdoB(event.target.value);
-                    }}></Input>
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Label htmlFor="startDate" md={3}>Ngay bat dau</Label>
-                  <Col md={9}>
-                    <Input type="date" id="startDate" name="startDate" value={startDate}
-                    onChange={(event) => {
-                      return setstartDate(event.target.value);
-                    }}></Input>
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Label htmlFor="department" md={3}>Phong ban</Label>
-                  <Col md={9}>
-                    <Control.select model=".department" id="department" name="department" className="form-control" defaultValue="Sale">
-                      <option>Sale</option>
-                      <option>HR</option>
-                      <option>Marketing</option>
-                      <option>IT</option>
-                      <option>Finance</option>
-                    </Control.select>
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Label htmlFor="salaryScale" md={3}>He so luong</Label>
-                  <Col md={9}>
-                    <Control.text model=".salaryScale" id="salaryScale" name="salaryScale" className="form-control"></Control.text>
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Label htmlFor="annualLeave" md={3}>Nghi phep</Label>
-                  <Col md={9}>
-                    <Control.text model=".annualLeave" id="annualLeave" name="annualLeave" className="form-control"></Control.text>
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Label htmlFor="overTime" md={3}>Lam them gio</Label>
-                  <Col md={9}>
-                    <Control.text model=".overTime" id="overTime" name="overTime" className="form-control"></Control.text>
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                <Col md={{ size: 3, offset: 3 }}>
-                  <Button type="submit" className="btn btn-info">Thêm</Button>
-                </Col>
-              </Row>
-              </LocalForm>
-            </ModalBody>
-        </Modal>
-      </div>
-      {/* <div>
         <Modal
           isOpen={modalOpen}
           toggle={(modalOpen) => setModalOpen(!modalOpen)}
@@ -242,169 +177,166 @@ const StaffList = ({ staffs, updateState }) => {
             Thêm nhân viên
           </ModalHeader>
           <ModalBody>
-            <Form
+            <LocalForm
               onSubmit={(values) => {
                 handleSubmit(values);
               }}
             >
               <Row className="mt-2">
                 <Label htmlFor="name" md={3}>
-                  Tên nhân viên:{" "}
+                  Ten nhan vien
                 </Label>
                 <Col md={9}>
-                  <Input
-                    type="text"
+                  <Control.text
+                    model=".name"
                     id="name"
                     name="name"
-                    value={New.name}
-                    onChange={(event) => {
-                      return setNew({ ...New, name: event.target.value });
+                    className="form-control"
+                    validators={{ required, maxLength: maxlength(15) }}
+                  ></Control.text>
+                  <Errors
+                    model=".name"
+                    show={(field) => field.touched && !field.focus}
+                    messages={{
+                      required: "Yêu cầu nhập.",
+                      maxLength: "Hãy nhập dưới 15 ký tự.",
                     }}
-                    onBlur={(touch) => {
-                      return settouchName(true);
-                    }}
-                  ></Input>
-                  <p className="text-danger">{error.name}</p>
+                    className="text-danger"
+                  />
                 </Col>
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="doB" md={3}>
-                  Ngày sinh:{" "}
+                  Ngay sinh
                 </Label>
                 <Col md={9}>
                   <Input
                     type="date"
                     id="doB"
                     name="doB"
-                    value={New.doB}
+                    value={doB}
                     onChange={(event) => {
-                      return setNew({ ...New, doB: event.target.value });
-                    }}
-                    onBlur={(touch) => {
-                      return settouchdoB(true);
+                      return setdoB(event.target.value);
                     }}
                   ></Input>
-                  <p className="text-danger">{error.doB}</p>
                 </Col>
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="startDate" md={3}>
-                  Ngày bắt đầu:{" "}
+                  Ngay bat dau
                 </Label>
                 <Col md={9}>
                   <Input
                     type="date"
                     id="startDate"
                     name="startDate"
-                    value={New.startDate}
+                    value={startDate}
                     onChange={(event) => {
-                      return setNew({ ...New, startDate: event.target.value });
-                    }}
-                    onBlur={(touch) => {
-                      return settouchstartDate(true);
+                      return setstartDate(event.target.value);
                     }}
                   ></Input>
-                  <p className="text-danger">{error.startDate}</p>
                 </Col>
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="department" md={3}>
-                  Phòng ban:{" "}
+                  Phong ban
                 </Label>
                 <Col md={9}>
-                  <Input
-                    type="select"
+                  <Control.select
+                    model=".department"
                     id="department"
                     name="department"
-                    value={New.department}
-                    onChange={(event) => {
-                      return setNew({ ...New, department: event.target.value });
-                    }}
+                    className="form-control"
+                    defaultValue="Sale"
                   >
-                    <option>Sales</option>
+                    <option>Sale</option>
                     <option>HR</option>
                     <option>Marketing</option>
                     <option>IT</option>
                     <option>Finance</option>
-                  </Input>
-                  <p className="text-danger">{error.department}</p>
+                  </Control.select>
                 </Col>
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="salaryScale" md={3}>
-                  Hệ số lương:{" "}
+                  He so luong
                 </Label>
                 <Col md={9}>
-                  <Input
-                    type="text"
+                  <Control.text
+                    model=".salaryScale"
                     id="salaryScale"
                     name="salaryScale"
-                    value={New.salaryScale}
-                    onChange={(event) => {
-                      return setNew({
-                        ...New,
-                        salaryScale: event.target.value,
-                      });
+                    className="form-control"
+                    validators={{ required, isNumber }}
+                  ></Control.text>
+                  <Errors
+                    model=".salaryScale"
+                    show={(field) => field.touched && !field.focus}
+                    messages={{
+                      required: "Yêu cầu nhập.",
+                      isNumber: "Hãy nhập số.",
                     }}
-                    onBlur={(touch) => {
-                      return settouchsalaryScale(true);
-                    }}
-                  ></Input>
-                  <p className="text-danger">{error.salaryScale}</p>
+                    className="text-danger"
+                  ></Errors>
                 </Col>
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="annualLeave" md={3}>
-                  Số ngày nghỉ phép còn lại:{" "}
+                  Nghi phep
                 </Label>
                 <Col md={9}>
-                  <Input
-                    type="text"
+                  <Control.text
+                    model=".annualLeave"
                     id="annualLeave"
                     name="annualLeave"
-                    value={New.annualLeave}
-                    onChange={(event) => {
-                      return setNew({
-                        ...New,
-                        annualLeave: event.target.value,
-                      });
+                    className="form-control"
+                    validators={{ required, isNumber }}
+                  ></Control.text>
+                  <Errors
+                    model=".annualLeave"
+                    show={(field) => field.touched && !field.focus}
+                    messages={{
+                      required: "Yêu cầu nhập.",
+                      isNumber: "Hãy nhập số.",
                     }}
-                    onBlur={(touch) => {
-                      return settouchannualLeave(true);
-                    }}
-                  ></Input>
-                  <p className="text-danger">{error.annualLeave}</p>
+                    className="text-danger"
+                  ></Errors>
                 </Col>
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="overTime" md={3}>
-                  Số ngày làm thêm:{" "}
+                  Lam them gio
                 </Label>
                 <Col md={9}>
-                  <Input
-                    type="text"
+                  <Control.text
+                    model=".overTime"
                     id="overTime"
                     name="overTime"
-                    value={New.overTime}
-                    onChange={(event) => {
-                      return setNew({ ...New, overTime: event.target.value });
+                    className="form-control"
+                    validators={{ required, isNumber }}
+                  ></Control.text>
+                  <Errors
+                    model=".overTime"
+                    show={(field) => field.touched && !field.focus}
+                    messages={{
+                      required: "Yêu cầu nhập.",
+                      isNumber: "Hãy nhập số.",
                     }}
-                    onBlur={(touch) => {
-                      return settouchoverTime(true);
-                    }}
-                  ></Input>
-                  <p className="text-danger">{error.overTime}</p>
+                    className="text-danger"
+                  ></Errors>
                 </Col>
               </Row>
               <Row className="mt-2">
                 <Col md={{ size: 3, offset: 3 }}>
-                  <Button type="submit">Thêm</Button>
+                  <Button type="submit" className="btn btn-info">
+                    Thêm
+                  </Button>
                 </Col>
               </Row>
-            </Form>
+            </LocalForm>
           </ModalBody>
         </Modal>
-      </div> */}
+      </div>
     </div>
   );
 };
