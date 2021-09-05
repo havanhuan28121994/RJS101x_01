@@ -10,7 +10,7 @@ import DepList from "./DepartmentComponent";
 import Footer from "./FooterComponent";
 import SalaryList from "./SalaryList";
 import Error from "./ErrorComponent";
-import { addStaff } from "../redux/ActionCreator";
+import { addStaff, fetchStaff } from "../redux/ActionCreator";
 
 const mapStateToProps = state => {
   return {
@@ -40,6 +40,7 @@ const mapDispatchToProps = (dispatch) => ({
         overTime
       )
     ),
+  fetchStaff: () => {dispatch(fetchStaff())}
 });
 
 class Main extends Component {
@@ -48,13 +49,18 @@ class Main extends Component {
 
     // this.updateState = this.updateState.bind(this);
 
-    this.state = {
-      staffs : this.props.staffs
-    }
+    // this.state = {
+    //   staffs : this.props.staffs
+    // }
+  }
+
+  componentDidMount() {
+    this.props.fetchStaff();
+    console.log("Mouted")
   }
 
   componentDidUpdate() {
-    console.log(this.props.staffs)
+    console.log(this.props.staffs.staffs)
   }
 
   // componentDidMount() {
@@ -76,13 +82,15 @@ class Main extends Component {
 
   render() {
     const StaffWithId = ({ match }) => {
-      const staffSelected = this.props.staffs.filter(
+      const staffSelected = this.props.staffs.staffs.filter(
         (staff) => staff.id === parseInt(match.params.id, 10)
       )[0];
       return (
         <Staff
           staffSelected={staffSelected}
           department={this.props.departments}
+          isLoading={this.props.staffs.isLoading}
+          errMes={this.props.staffs.errMes}
         />
       );
     };
@@ -96,10 +104,12 @@ class Main extends Component {
               path="/"
               component={() => (
                 <StaffList
-                  staffs={this.props.staffs}
+                  staffs={this.props.staffs.staffs}
                   departments={this.props.departments}
                   //updateState={(newStaff) => this.updateState(newStaff)}
                   addStaff={this.props.addStaff}
+                  isLoading={this.props.staffs.isLoading}
+                  errMes={this.props.staffs.errMes}
                 />
               )}
             />
@@ -110,7 +120,7 @@ class Main extends Component {
             />
             <Route
               path="/salarylist"
-              component={() => <SalaryList staffs={this.props.staffs} />}
+              component={() => <SalaryList staffs={this.props.staffs.staffs} />}
             />
             <Route path="*" component={Error} />
           </Switch>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardImg,
@@ -14,13 +14,14 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors} from 'react-redux-form';
+import { Loading } from "./LoadingComponent";
 
 // form validation 
 const required = (value) => value && value.length > 0 ;
 const maxlength = (len) => (value) => !(value) || (value.length <= len);
 const isNumber = (value) => !(value) ||!isNaN(Number(value));
 
-const StaffList = ({ staffs, updateState, addStaff }) => {
+const StaffList = ({ staffs, addStaff, isLoading, errMes }) => {
   // set state for name & search for search function
   const [Name, setName] = useState(null);
   const [SEARCH, setSEARCH] = useState(null);
@@ -31,9 +32,31 @@ const StaffList = ({ staffs, updateState, addStaff }) => {
 
   // set state to toggle add modal
   const [modalOpen, setModalOpen] = useState(false);
+  
+  useEffect(() => {
+    console.log(isLoading, errMes)
+  }, []);
 
   // render full staff list
   const STAFFS = staffs.map((staff) => {
+    if (isLoading) {
+      return (
+        <div className="container">
+          <div className="row">
+            <Loading />
+          </div>
+        </div>
+      )
+    } else if (errMes != null) {
+      return (
+        <div className="container">
+          <div className="row">
+            {errMes}
+          </div>
+        </div>
+      )
+    }
+
     return (
       <Link
         to={`/staff/${staff.id}`}
@@ -157,11 +180,11 @@ const StaffList = ({ staffs, updateState, addStaff }) => {
 
       {/* Return full staffs list if user has not performed search, return message if there is no search results, return results if there is results */}
       <div className="row">
-        {SEARCH === null
-          ? STAFFS
-          : SEARCH.length == 0
-          ? "Không tìm thấy nhân viên nào"
-          : SEARCH}
+        {isLoading ? <Loading /> 
+          : (errMes != null) ? {errMes} 
+          : SEARCH === null ? STAFFS
+          : SEARCH.length == 0 ? "Không tìm thấy nhân viên nào"
+          : SEARCH} 
       </div>
 
       {/* Modal */}

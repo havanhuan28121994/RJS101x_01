@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Breadcrumb, BreadcrumbItem, CardImg } from "reactstrap";
 import { Link } from 'react-router-dom';
 import dateFormat from "dateformat";
+import { Loading } from './LoadingComponent';
 
 class Staff extends Component {
   constructor(props) {
@@ -33,15 +34,28 @@ class Staff extends Component {
   }
 
   render() {
-    console.log(this.props.staffSelected);
-    console.log(this.props.staffs);
-    const staff = this.props.staffSelected;
-    console.log(staff);
     let rendered = <div></div>;
     let name = <div></div>;
-    if (staff) {
-      rendered = this.renderStaff(staff);
-      name = staff.name;
+    console.log(this.props.staffSelected);
+    if (this.props.isLoading) {
+      return (
+        <div className="container">
+          <div className="row">
+            <Loading />
+          </div>
+        </div>
+      )
+    } else if (this.props.errMes != null) {
+      return (
+        <div className="container">
+          <div className="row">
+            {this.props.errMes}
+          </div>
+        </div>
+      )
+    } else if (this.props.staffSelected) {
+      rendered = this.renderStaff(this.props.staffSelected);
+      name = this.props.staffSelected.name;
     }
 
     return (
