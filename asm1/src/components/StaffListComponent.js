@@ -20,7 +20,7 @@ const required = (value) => value && value.length > 0 ;
 const maxlength = (len) => (value) => !(value) || (value.length <= len);
 const isNumber = (value) => !(value) ||!isNaN(Number(value));
 
-const StaffList = ({ staffs, updateState }) => {
+const StaffList = ({ staffs, updateState, addStaff }) => {
   // set state for name & search for search function
   const [Name, setName] = useState(null);
   const [SEARCH, setSEARCH] = useState(null);
@@ -85,21 +85,23 @@ const StaffList = ({ staffs, updateState }) => {
   // handle add submit
    const handleSubmit = (values) => {
 
-    const newStaff = {
-      id: staffs.length,
-      name: values.name,
-      doB: doB,
-      startDate: startDate,
-      department: values.department,
-      salaryScale: values.salaryScale,
-      annualLeave: values.annualLeave,
-      overTime: values.overTime,
-      image: "/assets/images/alberto.png",
-    };
+    // const newStaff = {
+    //   id: staffs.length,
+    //   name: values.name,
+    //   doB: doB,
+    //   startDate: startDate,
+    //   department: values.department,
+    //   salaryScale: values.salaryScale,
+    //   annualLeave: values.annualLeave,
+    //   overTime: values.overTime,
+    //   image: "/assets/images/alberto.png",
+    // };
 
     setModalOpen(!modalOpen);
 
-    updateState(newStaff);
+    //updateState(newStaff);
+
+    addStaff(values.name, doB, startDate, values.department, values.salaryScale, values.annualLeave, values.overTime)
    };
 
   // return part

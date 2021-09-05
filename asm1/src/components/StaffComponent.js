@@ -34,6 +34,7 @@ class Staff extends Component {
 
   render() {
     console.log(this.props.staffSelected);
+    console.log(this.props.staffs);
     const staff = this.props.staffSelected;
     console.log(staff);
     let rendered = <div></div>;
