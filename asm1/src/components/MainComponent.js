@@ -10,12 +10,13 @@ import DepList from "./DepartmentComponent";
 import Footer from "./FooterComponent";
 import SalaryList from "./SalaryList";
 import Error from "./ErrorComponent";
-import { addStaff, fetchStaffs, fetchDeps } from "../redux/ActionCreator";
+import { addStaff, fetchStaffs, fetchDeps, fetchSalaries } from "../redux/ActionCreator";
 
 const mapStateToProps = state => {
   return {
     staffs : state.staffs,
-    departments : state.departments
+    departments : state.departments,
+    staffsSalaries : state.staffsSalaries
   }
 }
 
@@ -41,7 +42,8 @@ const mapDispatchToProps = (dispatch) => ({
       )
     ),
   fetchStaffs: () => {dispatch(fetchStaffs())},
-  fetchDeps: () => {dispatch(fetchDeps())}
+  fetchDeps: () => {dispatch(fetchDeps())},
+  fetchSalaries: () => {dispatch(fetchSalaries())}
 });
 
 class Main extends Component {
@@ -58,6 +60,7 @@ class Main extends Component {
   componentDidMount() {
     this.props.fetchStaffs();
     this.props.fetchDeps();
+    this.props.fetchSalaries()
   }
 
   componentDidUpdate() {
@@ -107,7 +110,9 @@ class Main extends Component {
             />
             <Route
               path="/salarylist"
-              component={() => <SalaryList staffs={this.props.staffs.staffs} />}
+              component={() => <SalaryList staffsSalaries={this.props.staffsSalaries.staffsSalaries}
+              isLoading={this.props.staffsSalaries.isLoading}
+                errMes={this.props.staffsSalaries.errMes} />}
             />
             <Route path="*" component={Error} />
           </Switch>

@@ -5,6 +5,10 @@ import { Loading } from "./LoadingComponent";
 
 const DepList = ({departments, isLoading, errMes}) => {
 
+  useEffect(() => {
+    console.log(isLoading, errMes)
+  }, [])
+
     const DEP = departments.map((dep) => {
       return (
           <div key={dep.id} className="col col-12 col-md-6 col-lg-4">
@@ -29,9 +33,9 @@ const DepList = ({departments, isLoading, errMes}) => {
           </Breadcrumb>
         </div>
         <h1 className="pb-3 text-dark">Danh sách phòng ban</h1>
-        <div className="row">{ isLoading ? <Loading /> 
-        : (errMes != null) ? errMes 
-        : DEP}</div>
+        <div className="row">
+          {isLoading ? <Loading /> : errMes != null ? errMes : DEP}
+        </div>
         <div className="row">
           <Link to="/" className="col-12 pt-3">
             &#8592; Trở về Danh sách nhân viên

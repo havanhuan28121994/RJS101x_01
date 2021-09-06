@@ -1,5 +1,6 @@
 import * as ActionType from './ActionType';
-import { DEPARTMENTS, STAFFS } from "../shared/staffs";
+import { DEPARTMENTS } from "../shared/staffs";
+import { baseUrl } from './baseUrl';
 
 export const addStaff = (name, doB, startDate, department, salaryScale, annualLeave, overTime) => ({
     type: ActionType.ADD_STAFF,
@@ -17,9 +18,9 @@ export const addStaff = (name, doB, startDate, department, salaryScale, annualLe
 export const fetchStaffs = () => (dispatch) => {
     dispatch(staffsLoading(true));
 
-    setTimeout(() => {
-        dispatch(staffsLoaded(STAFFS));
-    }, 2000)
+    return fetch(baseUrl + 'staffs')
+        .then(respone => respone.json())
+        .then(staffs => dispatch(staffsLoaded(staffs)))
 };
 
 export const staffsLoading = () => ({
@@ -39,9 +40,9 @@ export const staffsLoaded = (staffs) => ({
 export const fetchDeps = () => (dispatch) => {
     dispatch(depsLoading(true));
 
-    setTimeout(() => {
-        dispatch(depsLoaded(DEPARTMENTS));
-    }, 2000)
+    return fetch(baseUrl + 'departments')
+        .then(respone => respone.json())
+        .then(departments => dispatch(depsLoaded(departments)))
 };
 
 export const depsLoading = () => ({
@@ -56,4 +57,26 @@ export const depsFailed = (errMes) => ({
 export const depsLoaded = (deps) => ({
     type: ActionType.DEPARTMENTS_LOADED,
     payload: deps
+})
+
+export const fetchSalaries = () => (dispatch) => {
+    dispatch(salariesLoading(true));
+
+    return fetch(baseUrl + 'staffsSalary')
+        .then(respone => respone.json())
+        .then(staffsSalaries => dispatch(salariesLoaded(staffsSalaries)))
+};
+
+export const salariesLoading = () => ({
+    type: ActionType.SALARIES_LOADING,
+});
+
+export const salariesFailed = (errMes) => ({
+    type: ActionType.SALARIES_FAILED,
+    payload: errMes
+});
+
+export const salariesLoaded = (staffsSalaries) => ({
+    type: ActionType.SALARIES_LOADED,
+    payload: staffsSalaries
 })

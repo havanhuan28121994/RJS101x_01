@@ -7,14 +7,15 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
 
 const basicSalary = 3000000;
 const overTimeSalary = 200000;
 
 // function to compare salary to sort staff array
 function compare(a, b) {
-  const salaryA = a.salaryScale * basicSalary + a.overTime * overTimeSalary;
-  const salaryB = b.salaryScale * basicSalary + b.overTime * overTimeSalary;
+  const salaryA = a.salary;
+  const salaryB = b.salary;
 
   let comparison = 0;
   if (salaryA < salaryB) {
@@ -45,7 +46,7 @@ class SalaryList extends Component {
   rendersalary(sort) {
     console.log(sort);
     if (sort === 1) {
-      return this.props.staffs.sort(compare).map((staff) => {
+      return this.props.staffsSalaries.sort(compare).map((staff) => {
         return (
           <div key={staff.id} className="col col-12 col-md-6 col-lg-4 p-2">
             <Card tag="li" className="mt-2 p-1">
@@ -63,17 +64,14 @@ class SalaryList extends Component {
                 className="pl-3 pb-2 bg-light"
                 style={{ borderTop: "1px solid #878787" }}
               >
-                Lương: {(
-                  staff.salaryScale * basicSalary +
-                  staff.overTime * overTimeSalary
-                ).toFixed(1)}
+                Lương: {staff.salary}
               </CardText>
             </Card>
           </div>
         );
       });
     } else if (sort === 2) {
-      return this.props.staffs.sort(compare).reverse().map((staff) => {
+      return this.props.staffsSalaries.sort(compare).reverse().map((staff) => {
         return (
           <div key={staff.id} className="col col-12 col-md-6 col-lg-4 p-2">
             <Card tag="li" className="mt-2 p-1">
@@ -89,10 +87,7 @@ class SalaryList extends Component {
                 className="pl-3 pb-2 bg-light"
                 style={{ borderTop: "1px solid #878787" }}
               >
-                Lương: {(
-                  staff.salaryScale * basicSalary +
-                  staff.overTime * overTimeSalary
-                ).toFixed(1)}
+                Lương: {staff.salary}
               </CardText>
             </Card>
           </div>
@@ -104,7 +99,7 @@ class SalaryList extends Component {
   render() {
 
     // render unsort staff array when sort = null
-    const STAFFS = this.props.staffs.map((staff) => {
+    const STAFFS = this.props.staffsSalaries.map((staff) => {
       return (
         <div key={staff.id} className="col col-12 col-md-6 col-lg-4 p-2">
           <Card tag="li" className="mt-2 p-1">
@@ -120,10 +115,7 @@ class SalaryList extends Component {
               className="pl-3 pb-2 bg-light"
               style={{ borderTop: "1px solid #878787" }}
             >
-              Lương: {(
-                staff.salaryScale * basicSalary +
-                staff.overTime * overTimeSalary
-              ).toFixed(1)}
+              Lương: {staff.salary}
             </CardText>
           </Card>
         </div>
@@ -162,7 +154,9 @@ class SalaryList extends Component {
             Cao &#8594; thấp{" "}
           </button>
         </div>
-        <div className="row">{ this.state.sort ? this.rendersalary(this.state.sort) : STAFFS}</div>
+        <div className="row">{ this.props.isLoading ? <Loading />
+        : this.props.errMes != null ? this.props.errMes
+        : this.state.sort ? this.rendersalary(this.state.sort) : STAFFS}</div>
         <div className="row">
           <Link to="/" className="col-12 pt-3">
             &#8592; Trở về Danh sách nhân viên
