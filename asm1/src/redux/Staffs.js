@@ -11,7 +11,7 @@ const Staffs = (state = { isLoading: true, errMes: null, staffs: []}, action) =>
     case ActionType.ADD_STAFF:
         var staff = action.payload;
         staff.id = state.staffs.length;
-        staff.image = '/assets/images/alberto.png';
+        staff.image = '/asset/images/alberto.png';
         var newList = state.staffs.concat([staff]);
         return {...state, isLoading: false, errMes: null, staffs: newList}
     default:

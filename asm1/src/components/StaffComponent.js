@@ -11,7 +11,7 @@ class Staff extends Component {
 
   // render staff information in case a staff is selected, return empty div if none is selected
   renderStaff(staff) {
-    console.log(staff);
+    console.log(staff.image);
     return (
       <div className="mb-4 row mt-4">
         <div className="col-lg-2"></div>
