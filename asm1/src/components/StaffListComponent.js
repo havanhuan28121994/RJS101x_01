@@ -181,7 +181,7 @@ const StaffList = ({ staffs, addStaff, isLoading, errMes }) => {
       {/* Return full staffs list if user has not performed search, return message if there is no search results, return results if there is results */}
       <div className="row">
         {isLoading ? <Loading /> 
-          : (errMes != null) ? {errMes} 
+          : (errMes != null) ? errMes 
           : SEARCH === null ? STAFFS
           : SEARCH.length == 0 ? "Không tìm thấy nhân viên nào"
           : SEARCH} 

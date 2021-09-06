@@ -10,7 +10,7 @@ import DepList from "./DepartmentComponent";
 import Footer from "./FooterComponent";
 import SalaryList from "./SalaryList";
 import Error from "./ErrorComponent";
-import { addStaff, fetchStaff } from "../redux/ActionCreator";
+import { addStaff, fetchStaffs, fetchDeps } from "../redux/ActionCreator";
 
 const mapStateToProps = state => {
   return {
@@ -40,7 +40,8 @@ const mapDispatchToProps = (dispatch) => ({
         overTime
       )
     ),
-  fetchStaff: () => {dispatch(fetchStaff())}
+  fetchStaffs: () => {dispatch(fetchStaffs())},
+  fetchDeps: () => {dispatch(fetchDeps())}
 });
 
 class Main extends Component {
@@ -55,30 +56,13 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchStaff();
-    console.log("Mouted")
+    this.props.fetchStaffs();
+    this.props.fetchDeps();
   }
 
   componentDidUpdate() {
     console.log(this.props.staffs.staffs)
   }
-
-  // componentDidMount() {
-  //   const data = localStorage.getItem("Staffs");
-  //   if (data) {
-  //     this.setState({ staffs: JSON.parse(data) });
-  //   } else {
-  //     localStorage.setItem("Staffs", JSON.stringify(this.props.staffs));
-  //   }
-  // }
-
-  // updateState(staff) {
-  //   const currentStaffs = this.state.staffs;
-  //   this.setState({
-  //     staffs: currentStaffs.concat([staff]),
-  //   });
-  //   localStorage.setItem("Staffs", JSON.stringify(currentStaffs.concat([staff])));
-  // }
 
   render() {
     const StaffWithId = ({ match }) => {
@@ -88,7 +72,7 @@ class Main extends Component {
       return (
         <Staff
           staffSelected={staffSelected}
-          department={this.props.departments}
+          department={this.props.departments.departments}
           isLoading={this.props.staffs.isLoading}
           errMes={this.props.staffs.errMes}
         />
@@ -105,7 +89,7 @@ class Main extends Component {
               component={() => (
                 <StaffList
                   staffs={this.props.staffs.staffs}
-                  departments={this.props.departments}
+                  departments={this.props.departments.departments}
                   //updateState={(newStaff) => this.updateState(newStaff)}
                   addStaff={this.props.addStaff}
                   isLoading={this.props.staffs.isLoading}
@@ -116,7 +100,10 @@ class Main extends Component {
             <Route path="/staff/:id" component={StaffWithId} />
             <Route
               path="/departments"
-              component={() => <DepList departments={this.props.departments} />}
+              component={() => <DepList 
+                departments={this.props.departments.departments}
+                isLoading={this.props.departments.isLoading}
+                errMes={this.props.departments.errMes} />}
             />
             <Route
               path="/salarylist"

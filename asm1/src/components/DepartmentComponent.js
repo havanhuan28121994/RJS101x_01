@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardText, CardTitle, BreadcrumbItem, Breadcrumb } from "reactstrap";
 import { Link } from 'react-router-dom';
+import { Loading } from "./LoadingComponent";
 
-const DepList = ({departments}) => {
+const DepList = ({departments, isLoading, errMes}) => {
 
     const DEP = departments.map((dep) => {
       return (
@@ -28,7 +29,9 @@ const DepList = ({departments}) => {
           </Breadcrumb>
         </div>
         <h1 className="pb-3 text-dark">Danh sách phòng ban</h1>
-        <div className="row">{DEP}</div>
+        <div className="row">{ isLoading ? <Loading /> 
+        : (errMes != null) ? errMes 
+        : DEP}</div>
         <div className="row">
           <Link to="/" className="col-12 pt-3">
             &#8592; Trở về Danh sách nhân viên
