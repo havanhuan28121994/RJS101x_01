@@ -10,6 +10,7 @@ import DepList from "./DepartmentComponent";
 import Footer from "./FooterComponent";
 import SalaryList from "./SalaryList";
 import Error from "./ErrorComponent";
+import DepStaffs from "./DepStaffsComponent";
 import { addStaff, fetchStaffs, fetchDeps, fetchSalaries } from "../redux/ActionCreator";
 
 const mapStateToProps = state => {
@@ -82,6 +83,19 @@ class Main extends Component {
       );
     };
 
+    const DepWithId = ({ match }) => {
+      const depSelected = this.props.staffs.staffs.filter(
+        (staff) => staff.departmentId === parseInt(match.params.id, 10)
+      )[0];
+      return (
+        <DepStaffs
+          depSelected={depSelected}
+          departments={this.props.departments.departments}
+          staffs={this.props.staffs.staffs}
+        />
+      );
+    };
+
     return (
         <div>
           <Header />
@@ -101,6 +115,7 @@ class Main extends Component {
               )}
             />
             <Route path="/staff/:id" component={StaffWithId} />
+            <Route path="/department/:id" component={DepWithId} />
             <Route
               path="/departments"
               component={() => <DepList 
