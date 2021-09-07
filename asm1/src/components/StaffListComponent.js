@@ -119,41 +119,53 @@ const StaffList = ({ staffs, updateState }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const newStaff = {
-      id: staffs.length,
-      name: New.name,
-      doB: New.doB,
-      startDate: New.startDate,
-      department: New.department,
-      salaryScale: New.salaryScale,
-      annualLeave: New.annualLeave,
-      overTime: New.overTime,
-      image: "/assets/images/alberto.png",
-    };
-
-    setNew({
-      name: "",
-      doB: "",
-      startDate: "",
-      department: "",
-      salaryScale: "",
-      annualLeave: "",
-      overTime: "",
-    });
-
-    settouchName(false);
-    settouchdoB(false);
-    settouchstartDate(false);
-    settouchsalaryScale(false);
-    settouchannualLeave(false);
-    settouchoverTime(false);
-
-    // setNewStaffs((NewStaffs) => [...NewStaffs, newStaff]);
-    // console.log(NewStaffs);
-    // console.log(staffs);
+    if ( touchName && error.name != '' || touchdoB && error.doB != ''
+      || touchstartDate && error.startDate != '' || touchsalaryScale && error.salaryScale != ''
+      || touchannualLeave && error.annualLeave != '' || touchoverTime && error.overTime != ''
+      || !touchName && error.name == '' || !touchdoB && error.doB == ''
+      || !touchstartDate && error.startDate == '' || !touchsalaryScale && error.salaryScale == ''
+      || !touchannualLeave && error.annualLeave == '' || !touchoverTime && error.overTime == '') {
+      window.alert("Yêu cầu nhập đủ và chính xác thông tin");
+      return;
+    } else {
+      console.log(error);
+      const newStaff = {
+        id: staffs.length,
+        name: New.name,
+        doB: New.doB,
+        startDate: New.startDate,
+        department: New.department,
+        salaryScale: New.salaryScale,
+        annualLeave: New.annualLeave,
+        overTime: New.overTime,
+        image: "/assets/images/alberto.png",
+      };
+  
+      setNew({
+        name: "",
+        doB: "",
+        startDate: "",
+        department: "",
+        salaryScale: "",
+        annualLeave: "",
+        overTime: "",
+      });
+  
+      settouchName(false);
+      settouchdoB(false);
+      settouchstartDate(false);
+      settouchsalaryScale(false);
+      settouchannualLeave(false);
+      settouchoverTime(false);
+  
+      // setNewStaffs((NewStaffs) => [...NewStaffs, newStaff]);
+      // console.log(NewStaffs);
+      // console.log(staffs);
+      setModalOpen(!modalOpen);
+  
+      updateState(newStaff);
+    }
     setModalOpen(!modalOpen);
-
-    updateState(newStaff);
   };
 
   // form validation
