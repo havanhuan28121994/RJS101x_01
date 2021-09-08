@@ -4,25 +4,69 @@ import { baseUrl } from './baseUrl';
 
 
 // staffs
-export const addStaff = (name, doB, startDate, department, salaryScale, annualLeave, overTime) => ({
+export const addStaff = (newStaff) => ({
     type: ActionType.ADD_STAFF,
-    payload: {
+    payload: newStaff
+    
+});
+
+export const postStaff = (name, doB, startDate, departmentId, salaryScale, annualLeave, overTime) => (dispatch) => {
+    const newStaff = {
         name,
         doB,
         startDate,
-        department,
+        departmentId,
         salaryScale,
         annualLeave,
-        overTime,
+        overTime
     }
-});
+
+    newStaff.image = '/asset/images/alberto.png';
+
+    return fetch(baseUrl, {
+        method: 'POST',
+        body: JSON.stringify(newStaff),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error(`Error${response.status}: ${response.statusText}`);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        var errMess = new Error(error.message);
+        throw errMess;
+    })
+    .then(response => response.json())
+    .then(newStaff => dispatch(addStaff(newStaff)))
+    .catch(error => { alert("Try again") ; console.log(error.message)})
+}
 
 export const fetchStaffs = () => (dispatch) => {
     dispatch(staffsLoading(true));
 
     return fetch(baseUrl + 'staffs')
-        .then(respone => respone.json())
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error(`Error${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
+            var errMess = new Error(error.message);
+            throw errMess;
+        })
+        .then(response => response.json())
         .then(staffs => dispatch(staffsLoaded(staffs)))
+        .catch(error => dispatch(staffsFailed(error.message)))
 };
 
 export const staffsLoading = () => ({
@@ -56,7 +100,7 @@ export const fetchDeps = () => (dispatch) => {
             var errMess = new Error(error.message);
             throw errMess;
         })
-        .then(respone => respone.json())
+        .then(response => response.json())
         .then(departments => dispatch(depsLoaded(departments)))
         .catch(error => dispatch(depsFailed(error.message)))
 };
@@ -92,7 +136,7 @@ export const fetchSalaries = () => (dispatch) => {
             var errMess = new Error(error.message);
             throw errMess;
         })
-        .then(respone => respone.json())
+        .then(response => response.json())
         .then(staffsSalaries => dispatch(salariesLoaded(staffsSalaries)))
         .catch(error => dispatch(salariesFailed(error.message)))
 };

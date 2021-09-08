@@ -15,13 +15,14 @@ import {
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors} from 'react-redux-form';
 import { Loading } from "./LoadingComponent";
+import { DateTimePicker } from 'react-datetime-picker'
 
 // form validation 
 const required = (value) => value && value.length > 0 ;
 const maxlength = (len) => (value) => !(value) || (value.length <= len);
 const isNumber = (value) => !(value) ||!isNaN(Number(value));
 
-const StaffList = ({ staffs, addStaff, isLoading, errMes }) => {
+const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
   // set state for name & search for search function
   const [Name, setName] = useState(null);
   const [SEARCH, setSEARCH] = useState(null);
@@ -34,7 +35,7 @@ const StaffList = ({ staffs, addStaff, isLoading, errMes }) => {
   const [modalOpen, setModalOpen] = useState(false);
   
   useEffect(() => {
-    console.log(isLoading, errMes)
+    console.log(staffs)
   }, []);
 
   // render full staff list
@@ -108,23 +109,14 @@ const StaffList = ({ staffs, addStaff, isLoading, errMes }) => {
   // handle add submit
    const handleSubmit = (values) => {
 
-    // const newStaff = {
-    //   id: staffs.length,
-    //   name: values.name,
-    //   doB: doB,
-    //   startDate: startDate,
-    //   department: values.department,
-    //   salaryScale: values.salaryScale,
-    //   annualLeave: values.annualLeave,
-    //   overTime: values.overTime,
-    //   image: "/assets/images/alberto.png",
-    // };
-
     setModalOpen(!modalOpen);
 
-    //updateState(newStaff);
+    const isoDate = new Date().toISOString();
+    const newTime = isoDate.slice(10);
+    const timedDoB = doB.concat(newTime);
+    const timedStartDate = startDate.concat(newTime);
 
-    addStaff(values.name, doB, startDate, values.department, values.salaryScale, values.annualLeave, values.overTime)
+    postStaff(values.name, timedDoB, timedStartDate, values.departmentId, values.salaryScale, values.annualLeave, values.overTime)
    };
 
   // return part
@@ -262,16 +254,16 @@ const StaffList = ({ staffs, addStaff, isLoading, errMes }) => {
                 </Col>
               </Row>
               <Row className="mt-2">
-                <Label htmlFor="department" md={3}>
+                <Label htmlFor="departmentId" md={3}>
                   Phong ban
                 </Label>
                 <Col md={9}>
                   <Control.select
-                    model=".department"
-                    id="department"
-                    name="department"
+                    model=".departmentId"
+                    id="departmentId"
+                    name="departmentId"
                     className="form-control"
-                    defaultValue="Sale"
+                    defaultValue="Dept01"
                   >
                     <option>Sale</option>
                     <option>HR</option>
