@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from "react";
-import { BrowserRouter, Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
@@ -10,7 +10,7 @@ import DepList from "./DepartmentComponent";
 import Footer from "./FooterComponent";
 import SalaryList from "./SalaryList";
 import Error from "./ErrorComponent";
-import DepStaffs from "./DepStaffsComponent";
+import DepWithId from "./DepWithId";
 import { addStaff, fetchStaffs, fetchDeps, fetchSalaries, fetchDepStaffs } from "../redux/ActionCreator";
 
 const mapStateToProps = state => {
@@ -18,7 +18,6 @@ const mapStateToProps = state => {
     staffs : state.staffs,
     departments : state.departments,
     staffsSalaries : state.staffsSalaries,
-    depStaffs: state.depStaffs
   }
 }
 
@@ -46,7 +45,6 @@ const mapDispatchToProps = (dispatch) => ({
   fetchStaffs: () => {dispatch(fetchStaffs())},
   fetchDeps: () => {dispatch(fetchDeps())},
   fetchSalaries: () => {dispatch(fetchSalaries())},
-  fetchDepStaffs: (depId) => {dispatch(fetchDepStaffs(depId))},
 });
 
 class Main extends Component {
@@ -65,7 +63,6 @@ class Main extends Component {
   }
 
   render() {
-    //console.log("depdart",this.props.depStaffs.depStaffs)
     const StaffWithId = ({ match }) => {
       
       const staffSelected = this.props.staffs.staffs.filter(
@@ -77,20 +74,6 @@ class Main extends Component {
           department={this.props.departments.departments}
           isLoading={this.props.staffs.isLoading}
           errMes={this.props.staffs.errMes}
-        />
-      );
-    };
-
-    const DepWithId = ({ match }) => {
-      const depId = match.params.id;
-     
-      return (
-        <DepStaffs
-          depId={depId}
-          fetchDepStaffs={this.props.fetchDepStaffs}
-          depStaffs={this.props.depStaffs.depStaffs}
-          isLoading={this.props.depStaffs.isLoading}
-          errMes={this.props.depStaffs.errMes}
         />
       );
     };
@@ -113,7 +96,8 @@ class Main extends Component {
               )}
             />
             <Route path="/staff/:id" component={StaffWithId} />
-            <Route path="/department/:id" component={DepWithId} />
+            <Route path="/department/:id" component={(match) => (<DepWithId match={match}
+            fetchDepStaffs={this.props.fetchDepStaffs} depStaffs={this.props.depStaffs} />)} />
             <Route
               path="/departments"
               component={() => <DepList 
