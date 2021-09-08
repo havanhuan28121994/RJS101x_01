@@ -5,10 +5,6 @@ import { Loading } from "./LoadingComponent";
 
 const DepList = ({departments, isLoading, errMes}) => {
 
-  useEffect(() => {
-    console.log(isLoading, errMes)
-  }, [])
-
     const DEP = departments.map((dep) => {
       return (
         <Link to={`/department/${dep.id}`}

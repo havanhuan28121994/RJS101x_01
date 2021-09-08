@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { BrowserRouter, Switch, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,13 +11,14 @@ import Footer from "./FooterComponent";
 import SalaryList from "./SalaryList";
 import Error from "./ErrorComponent";
 import DepStaffs from "./DepStaffsComponent";
-import { addStaff, fetchStaffs, fetchDeps, fetchSalaries } from "../redux/ActionCreator";
+import { addStaff, fetchStaffs, fetchDeps, fetchSalaries, fetchDepStaffs } from "../redux/ActionCreator";
 
 const mapStateToProps = state => {
   return {
     staffs : state.staffs,
     departments : state.departments,
-    staffsSalaries : state.staffsSalaries
+    staffsSalaries : state.staffsSalaries,
+    depStaffs: state.depStaffs
   }
 }
 
@@ -44,32 +45,29 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   fetchStaffs: () => {dispatch(fetchStaffs())},
   fetchDeps: () => {dispatch(fetchDeps())},
-  fetchSalaries: () => {dispatch(fetchSalaries())}
+  fetchSalaries: () => {dispatch(fetchSalaries())},
+  fetchDepStaffs: (depId) => {dispatch(fetchDepStaffs(depId))},
 });
 
 class Main extends Component {
   constructor(props) {
     super(props);
-
-    // this.updateState = this.updateState.bind(this);
-
-    // this.state = {
-    //   staffs : this.props.staffs
-    // }
   }
 
   componentDidMount() {
     this.props.fetchStaffs();
     this.props.fetchDeps();
-    this.props.fetchSalaries()
+    this.props.fetchSalaries();
   }
 
   componentDidUpdate() {
-    console.log(this.props.staffs.staffs)
+    console.log(this.props.staffs.staffs);
   }
 
   render() {
+    //console.log("depdart",this.props.depStaffs.depStaffs)
     const StaffWithId = ({ match }) => {
+      
       const staffSelected = this.props.staffs.staffs.filter(
         (staff) => staff.id === parseInt(match.params.id, 10)
       )[0];
@@ -84,14 +82,15 @@ class Main extends Component {
     };
 
     const DepWithId = ({ match }) => {
-      const depSelected = this.props.staffs.staffs.filter(
-        (staff) => staff.departmentId === parseInt(match.params.id, 10)
-      )[0];
+      const depId = match.params.id;
+     
       return (
         <DepStaffs
-          depSelected={depSelected}
-          departments={this.props.departments.departments}
-          staffs={this.props.staffs.staffs}
+          depId={depId}
+          fetchDepStaffs={this.props.fetchDepStaffs}
+          depStaffs={this.props.depStaffs.depStaffs}
+          isLoading={this.props.depStaffs.isLoading}
+          errMes={this.props.depStaffs.errMes}
         />
       );
     };
@@ -107,7 +106,6 @@ class Main extends Component {
                 <StaffList
                   staffs={this.props.staffs.staffs}
                   departments={this.props.departments.departments}
-                  //updateState={(newStaff) => this.updateState(newStaff)}
                   addStaff={this.props.addStaff}
                   isLoading={this.props.staffs.isLoading}
                   errMes={this.props.staffs.errMes}

@@ -2,6 +2,8 @@ import * as ActionType from './ActionType';
 import { DEPARTMENTS } from "../shared/staffs";
 import { baseUrl } from './baseUrl';
 
+
+// staffs
 export const addStaff = (name, doB, startDate, department, salaryScale, annualLeave, overTime) => ({
     type: ActionType.ADD_STAFF,
     payload: {
@@ -37,12 +39,26 @@ export const staffsLoaded = (staffs) => ({
     payload: staffs
 })
 
+// Departments
 export const fetchDeps = () => (dispatch) => {
     dispatch(depsLoading(true));
 
     return fetch(baseUrl + 'departments')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error(`Error${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
+            var errMess = new Error(error.message);
+            throw errMess;
+        })
         .then(respone => respone.json())
         .then(departments => dispatch(depsLoaded(departments)))
+        .catch(error => dispatch(depsFailed(error.message)))
 };
 
 export const depsLoading = () => ({
@@ -59,12 +75,26 @@ export const depsLoaded = (deps) => ({
     payload: deps
 })
 
+// Salary
 export const fetchSalaries = () => (dispatch) => {
     dispatch(salariesLoading(true));
 
     return fetch(baseUrl + 'staffsSalary')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error(`Error${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        }, error => {
+            var errMess = new Error(error.message);
+            throw errMess;
+        })
         .then(respone => respone.json())
         .then(staffsSalaries => dispatch(salariesLoaded(staffsSalaries)))
+        .catch(error => dispatch(salariesFailed(error.message)))
 };
 
 export const salariesLoading = () => ({
@@ -79,4 +109,41 @@ export const salariesFailed = (errMes) => ({
 export const salariesLoaded = (staffsSalaries) => ({
     type: ActionType.SALARIES_LOADED,
     payload: staffsSalaries
+})
+
+// depStaffs
+
+export const fetchDepStaffs = (dep) => (dispatch) => {
+    dispatch(depStaffsLoading(true));
+
+    return fetch(baseUrl + 'departments/' + dep)
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error(`Error${response.status}: ${response.statusText}`);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        var errMess = new Error(error.message);
+        throw errMess;
+    })
+    .then(response => response.json())
+    .then(data => dispatch(depStaffsLoaded(data)))
+    .catch(error => dispatch(depStaffsFailed(error.message)))
+};
+
+export const depStaffsLoading = () => ({
+    type: ActionType.DEPSTAFFS_LOADING,
+});
+
+export const depStaffsFailed = (errMes) => ({
+    type: ActionType.DEPSTAFFS_FAILED,
+    payload: errMes
+});
+
+export const depStaffsLoaded = (depStaffs) => ({
+    type: ActionType.DEPSTAFFS_LOADED,
+    payload: depStaffs
 })
