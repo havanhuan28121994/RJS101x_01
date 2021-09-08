@@ -58,10 +58,6 @@ class Main extends Component {
     this.props.fetchSalaries();
   }
 
-  componentDidUpdate() {
-    console.log(this.props.staffs.staffs);
-  }
-
   render() {
     const StaffWithId = ({ match }) => {
       
@@ -97,7 +93,7 @@ class Main extends Component {
             />
             <Route path="/staff/:id" component={StaffWithId} />
             <Route path="/department/:id" component={(match) => (<DepWithId match={match}
-            fetchDepStaffs={this.props.fetchDepStaffs} depStaffs={this.props.depStaffs} />)} />
+            fetchDepStaffs={this.props.fetchDepStaffs} depStaffs={this.props.depStaffs} departments={this.props.departments.departments}/>)} />
             <Route
               path="/departments"
               component={() => <DepList 

@@ -32,7 +32,7 @@ class DepStaffs extends Component {
   
     return (
       <div className="container">
-        <h1 className="pb-3 text-dark">Danh sách nhân viên</h1>
+        <h1 className="pb-3 text-dark">Danh sách nhân viên phòng ban {this.props.depName} </h1>
   
         <div>
           <p>

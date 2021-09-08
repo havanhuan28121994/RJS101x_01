@@ -19,14 +19,21 @@ class DepWithId extends Component {
   }
 
   componentDidMount(){
-      this.props.fetchDepStaffs(this.props.match.match.params.id);
-      console.log(this.props.match.match.params.id)
+      const id = this.props.match.match.params.id;
+      this.props.fetchDepStaffs(id);
   }
 
   render() {
+      
+    const dep = this.props.departments.filter(
+        (dep) => dep.id === this.props.match.match.params.id
+      )[0];
+    const depName = dep ? dep.name : ''
+
     return (
  
         <DepStaffs
+            depName={depName}
             depStaffs={this.props.depStaffs}
             fetchDepStaffs={this.props.fetchDepStaffs}
             depId={this.props.depId}
