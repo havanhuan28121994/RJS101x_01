@@ -7,15 +7,17 @@ const DepList = ({departments, isLoading, errMes}) => {
 
     const DEP = departments.map((dep) => {
       return (
-        <Link to={`/department/${dep.id}`}
-        style={{ textDecoration: "none" }}>
-          <div key={dep.id} className="col col-12 col-md-6 col-lg-4">
+        
+          <Link to={`/department/${dep.id}`} className="col col-12 col-md-6 col-lg-4 text-dark mb-2"
+          style={{ textDecoration: "none" }}>
+            <div key={dep.id}>
               <Card tag="li" className="mt-2 p-1">
                 <CardTitle>{dep.name}</CardTitle>
                 <CardText>Số lượng nhân viên: {dep.numberOfStaff} </CardText>
               </Card>
-          </div>
-          </Link>
+            </div>
+          </Link> 
+      
       );
     });
 
