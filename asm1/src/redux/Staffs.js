@@ -10,7 +10,11 @@ const Staffs = (state = { isLoading: true, errMes: null, staffs: []}, action) =>
         return {...state, isLoading: false, errMes: action.payload, staffs: []};
     case ActionType.ADD_STAFF:
         var newStaff = action.payload;
-        return {...state, isLoading: false, errMes: null, staffs: newStaff}
+        return {...state, isLoading: false, errMes: null, staffs: newStaff};
+    case ActionType.DELETE_STAFF:
+        var delStaff = action.payload;
+        const newList = state.filter((staff) => (staff.id != delStaff.id));
+        return {...state, isLoading: false, errMes: null, staffs: newList}
     default:
         return state;
     }

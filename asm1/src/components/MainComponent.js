@@ -11,7 +11,7 @@ import Footer from "./FooterComponent";
 import SalaryList from "./SalaryList";
 import Error from "./ErrorComponent";
 import DepWithId from "./DepWithId";
-import { postStaff, fetchStaffs, fetchDeps, fetchSalaries, fetchDepStaffs } from "../redux/ActionCreator";
+import { postStaff, fetchStaffs, fetchDeps, fetchSalaries, deleteStaff } from "../redux/ActionCreator";
 
 const mapStateToProps = state => {
   return {
@@ -45,6 +45,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchStaffs: () => {dispatch(fetchStaffs())},
   fetchDeps: () => {dispatch(fetchDeps())},
   fetchSalaries: () => {dispatch(fetchSalaries())},
+  deleteStaff: (staffId) => {dispatch(deleteStaff(staffId))}
 });
 
 class Main extends Component {
@@ -66,6 +67,7 @@ class Main extends Component {
       )[0];
       return (
         <Staff
+          deleteStaff={this.props.deleteStaff}
           departments={this.props.departments.departments}
           staffSelected={staffSelected}
           department={this.props.departments.departments}

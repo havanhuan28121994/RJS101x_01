@@ -200,7 +200,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
             >
               <Row className="mt-2">
                 <Label htmlFor="name" md={3}>
-                  Ten nhan vien
+                  Tên nhân viên
                 </Label>
                 <Col md={9}>
                   <Control.text
@@ -223,7 +223,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="doB" md={3}>
-                  Ngay sinh
+                  Ngày sinh
                 </Label>
                 <Col md={9}>
                   <Input
@@ -239,7 +239,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="startDate" md={3}>
-                  Ngay bat dau
+                  Ngày bắt đầu
                 </Label>
                 <Col md={9}>
                   <Input
@@ -255,7 +255,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="departmentId" md={3}>
-                  Phong ban
+                  Phòng ban
                 </Label>
                 <Col md={9}>
                   <Control.select
@@ -275,7 +275,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="salaryScale" md={3}>
-                  He so luong
+                  Hệ số lương 
                 </Label>
                 <Col md={9}>
                   <Control.text
@@ -298,7 +298,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="annualLeave" md={3}>
-                  Nghi phep
+                  Nghỉ phép
                 </Label>
                 <Col md={9}>
                   <Control.text
@@ -321,7 +321,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
               </Row>
               <Row className="mt-2">
                 <Label htmlFor="overTime" md={3}>
-                  Lam them gio
+                  Làm thêm giờ
                 </Label>
                 <Col md={9}>
                   <Control.text

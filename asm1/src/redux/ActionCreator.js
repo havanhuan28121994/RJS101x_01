@@ -48,6 +48,52 @@ export const postStaff = (name, doB, startDate, departmentId, salaryScale, annua
     .catch(error => { alert("Try again") ; console.log(error.message)})
 }
 
+export const deleteStaff = (id, name, doB, startDate, departmentId, salaryScale, annualLeave, overTime, salary) => (dispatch) => {
+    const delStaff = {
+        id,
+        name,
+        doB,
+        startDate,
+        departmentId,
+        salaryScale,
+        annualLeave,
+        overTime,
+        salary
+    }
+    delStaff.image = '/asset/images/alberto.png';
+
+    return fetch(baseUrl + 'staffs/' + id, {
+        method: 'POST',
+        body: id,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Access-Control-Allow-Credentials': 'true'
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error(`Error${response.status}: ${response.statusText}`);
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        var errMess = new Error(error.message);
+        throw errMess;
+    })
+    .then(response => {response.json(); console.log(response)})
+    .then(delStaff => dispatch(delStaff(delStaff)))
+    .catch(error => { alert("Try again") ; console.log(error.message)})
+}
+
+export const delStaff = (delStaff) => ({
+    type: ActionType.DELETE_STAFF,
+    payload: delStaff
+});
+
 export const fetchStaffs = () => (dispatch) => {
     dispatch(staffsLoading(true));
 

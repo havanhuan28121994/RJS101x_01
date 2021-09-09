@@ -1,12 +1,47 @@
 import React, { Component } from "react";
-import { Breadcrumb, BreadcrumbItem, CardImg } from "reactstrap";
-import { Link } from 'react-router-dom';
+import { Breadcrumb, BreadcrumbItem, Button, CardImg, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Link, withRouter } from 'react-router-dom';
 import dateFormat from "dateformat";
 import { Loading } from './LoadingComponent';
 
 class Staff extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      modalOpen: false
+    }
+
+    this.handleClick = this.handleClick.bind(this);
+    this.setModalOpen = this.setModalOpen.bind(this);
+    this.handleClickNo = this.handleClickNo.bind(this);
+    this.handleClickYes = this.handleClickYes.bind(this);
+  }
+
+  setModalOpen(){
+    this.setState({
+      modalOpen: !this.state.modalOpen
+    })
+  }
+
+  handleClickNo(){
+    this.setModalOpen();
+  }
+
+  handleClickYes(staff){
+    // console.log(this.props.deleteStaff);
+    this.props.deleteStaff(staff.id, staff.doB, staff.startDate, staff.departmentId, staff.salaryScale, staff.annualLeave, staff.salary);
+    
+    // this.setModalOpen();
+    // console.log("staffId: " + staff.id);
+    this.props.history.push("/")
+    console.log(this.props.history, this.props.history.location.pathname )
+   // this.props.history.push('/');
+  }
+
+  handleClick(staff) {
+    console.log("nhan vien" + staff.id + staff.name);
+    alert("Xóa nhân viên " + staff.name + ", mã nhân viên " + staff.id + "?")
   }
 
   // render staff information in case a staff is selected, return empty div if none is selected
@@ -33,6 +68,12 @@ class Staff extends Component {
           <p>Phòng ban: { depName }</p>
           <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
           <p>Số ngày đã làm thêm: {staff.overTime}</p>
+          <Button
+            className="btn btn-primary mt-2"
+            onClick={this.setModalOpen}
+          >
+            Xóa nhân viên
+          </Button>
         </div>
       </div>
     );
@@ -87,11 +128,25 @@ class Staff extends Component {
             &#8592; Trở về Danh sách nhân viên
           </Link>
         </div>
+
+        <div>
+        <Modal
+          isOpen={this.state.modalOpen}
+          toggle={this.setModalOpen}
+        >
+          <ModalHeader isOpen={this.state.modalOpen}
+          toggle={this.setModalOpen}>Xóa nhân viên {this.props.staffSelected.name}, mã nhân viên {this.props.staffSelected.id} ?</ModalHeader>
+          <ModalBody>
+            
+            <button className="btn btn-info mt-1" onClick={() => this.handleClickYes(this.props.staffSelected)}>Xóa</button> <button className="btn btn-info mt-1 ml-1" onClick={this.handleClickNo}>Không</button>
+          </ModalBody>
+        </Modal>
+      </div>
       </div>
     );
   }
 }
 
-export default Staff;
+export default withRouter(Staff);
 
 
