@@ -23,7 +23,7 @@ export const postStaff = (name, doB, startDate, departmentId, salaryScale, annua
 
     newStaff.image = '/asset/images/alberto.png';
 
-    return fetch(baseUrl, {
+    return fetch(baseUrl + 'staffs', {
         method: 'POST',
         body: JSON.stringify(newStaff),
         headers: {

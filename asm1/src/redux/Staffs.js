@@ -10,7 +10,7 @@ const Staffs = (state = { isLoading: true, errMes: null, staffs: []}, action) =>
         return {...state, isLoading: false, errMes: action.payload, staffs: []};
     case ActionType.ADD_STAFF:
         var newStaff = action.payload;
-        return {...state, isLoading: false, errMes: null, staffs: state.staffs.concat([newStaff])}
+        return {...state, isLoading: false, errMes: null, staffs: newStaff}
     default:
         return state;
     }

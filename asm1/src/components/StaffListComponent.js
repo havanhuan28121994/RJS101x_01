@@ -265,11 +265,11 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
                     className="form-control"
                     defaultValue="Dept01"
                   >
-                    <option>Sale</option>
-                    <option>HR</option>
-                    <option>Marketing</option>
-                    <option>IT</option>
-                    <option>Finance</option>
+                    <option value="Dept01">Sale</option>
+                    <option value="Dept02">HR</option>
+                    <option value="Dept03">Marketing</option>
+                    <option value="Dept04">IT</option>
+                    <option value="Dept05">Finance</option>
                   </Control.select>
                 </Col>
               </Row>
