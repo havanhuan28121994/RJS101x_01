@@ -30,7 +30,8 @@ class Staff extends Component {
 
   handleClickYes(staff){
     // console.log(this.props.deleteStaff);
-    this.props.deleteStaff(staff.id, staff.doB, staff.startDate, staff.departmentId, staff.salaryScale, staff.annualLeave, staff.salary);
+    //this.props.deleteStaff(staff.id);
+    this.props.delStaff(staff.id);
     
     // this.setModalOpen();
     // console.log("staffId: " + staff.id);

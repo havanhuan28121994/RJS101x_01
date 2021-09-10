@@ -13,3 +13,4 @@ export const DEPSTAFFS_FAILED = 'DEPSTAFFS_FAILED';
 export const ADD_STAFF = 'ADD_STAFF';
 export const POST_STAFF = 'POST_STAFF';
 export const DELETE_STAFF = 'DELETE_STAFF';
+export const EDIT_STAFF = 'EDIT_STAFF';

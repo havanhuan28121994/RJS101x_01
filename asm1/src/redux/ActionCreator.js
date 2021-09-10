@@ -3,7 +3,7 @@ import { DEPARTMENTS } from "../shared/staffs";
 import { baseUrl } from './baseUrl';
 
 
-// staffs
+// add staff
 export const addStaff = (newStaff) => ({
     type: ActionType.ADD_STAFF,
     payload: newStaff
@@ -48,8 +48,9 @@ export const postStaff = (name, doB, startDate, departmentId, salaryScale, annua
     .catch(error => { alert("Try again") ; console.log(error.message)})
 }
 
-export const deleteStaff = (id, name, doB, startDate, departmentId, salaryScale, annualLeave, overTime, salary) => (dispatch) => {
-    const delStaff = {
+//edit staff
+export const editStaff = (id, name, doB, startDate, departmentId, salaryScale, annualLeave, overTime) => (dispatch) => {
+    const editStaff = {
         id,
         name,
         doB,
@@ -57,18 +58,16 @@ export const deleteStaff = (id, name, doB, startDate, departmentId, salaryScale,
         departmentId,
         salaryScale,
         annualLeave,
-        overTime,
-        salary
+        overTime
     }
-    delStaff.image = '/asset/images/alberto.png';
 
-    return fetch(baseUrl + 'staffs/' + id, {
-        method: 'POST',
-        body: id,
+    editStaff.image = '/asset/images/alberto.png';
+
+    return fetch(baseUrl + 'staffs', {
+        method: 'PATCH',
+        body: JSON.stringify(editStaff),
         headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'http://localhost:3000',
-            'Access-Control-Allow-Credentials': 'true'
+            'Content-Type': 'application/json'
         },
         credentials: 'same-origin'
     })
@@ -84,14 +83,21 @@ export const deleteStaff = (id, name, doB, startDate, departmentId, salaryScale,
         var errMess = new Error(error.message);
         throw errMess;
     })
-    .then(response => {response.json(); console.log(response)})
-    .then(delStaff => dispatch(delStaff(delStaff)))
+    .then(response => response.json())
+    .then(editStaff => dispatch(staffEdited(editStaff)))
     .catch(error => { alert("Try again") ; console.log(error.message)})
 }
 
-export const delStaff = (delStaff) => ({
+export const staffEdited = (editStaff) => ({
+    type: ActionType.EDIT_STAFF,
+    payload: editStaff
+    
+});
+
+// delete staff
+export const delStaff = (id) => ({
     type: ActionType.DELETE_STAFF,
-    payload: delStaff
+    payload: id
 });
 
 export const fetchStaffs = () => (dispatch) => {
