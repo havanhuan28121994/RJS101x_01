@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import dateFormat from "dateformat";
 import { Loading } from './LoadingComponent';
 import { LocalForm, Errors, Control } from "react-redux-form";
+import { FadeTransform } from 'react-animation-components'
 
 const required = (value) => value && value.length > 0 ;
 const maxlength = (len) => (value) => !(value) || (value.length <= len);
@@ -98,6 +99,7 @@ class Staff extends Component {
     const depName = department ? department.name : '';
     console.log(department);
     return (
+      <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)'}}>
       <div className="mb-4 row mt-4">
         <div className="col-lg-2"></div>
         <div className="col-12 col-lg-3">
@@ -128,6 +130,7 @@ class Staff extends Component {
           </Button>
         </div>
       </div>
+      </FadeTransform>
     );
   }
 

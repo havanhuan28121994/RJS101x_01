@@ -12,6 +12,7 @@ import SalaryList from "./SalaryList";
 import Error from "./ErrorComponent";
 import DepWithId from "./DepWithId";
 import { postStaff, fetchStaffs, fetchDeps, fetchSalaries, delStaff, editStaff } from "../redux/ActionCreator";
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const mapStateToProps = state => {
   return {
@@ -103,6 +104,8 @@ class Main extends Component {
     return (
         <div>
           <Header />
+          <TransitionGroup>
+            <CSSTransition key={this.props.location.key} classNames="page" timeout={500}>
           <Switch>
             <Route
               exact
@@ -117,6 +120,7 @@ class Main extends Component {
                 />
               )}
             />
+          
             <Route path="/staff/:id" component={StaffWithId} />
             <Route path="/department/:id" component={(match) => (<DepWithId match={match}
             fetchDepStaffs={this.props.fetchDepStaffs} depStaffs={this.props.depStaffs} departments={this.props.departments.departments}/>)} />
@@ -135,6 +139,8 @@ class Main extends Component {
             />
             <Route path="*" component={Error} />
           </Switch>
+          </CSSTransition>
+          </TransitionGroup>
           <Footer />
         </div>
     );
