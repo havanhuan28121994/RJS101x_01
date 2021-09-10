@@ -9,8 +9,8 @@ const DepList = ({departments, isLoading, errMes}) => {
       return (
         
           <Link to={`/department/${dep.id}`} className="col col-12 col-md-6 col-lg-4 text-dark mb-2"
-          style={{ textDecoration: "none" }}>
-            <div key={dep.id}>
+          style={{ textDecoration: "none" }} key={dep.id}>
+            <div>
               <Card tag="li" className="mt-2 p-1">
                 <CardTitle>{dep.name}</CardTitle>
                 <CardText>Số lượng nhân viên: {dep.numberOfStaff} </CardText>
