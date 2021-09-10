@@ -1,48 +1,84 @@
 import React, { Component } from "react";
-import { Breadcrumb, BreadcrumbItem, Button, CardImg, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Breadcrumb, BreadcrumbItem, Button, CardImg, Modal, ModalBody, ModalHeader, Row, Label, Col, Input } from "reactstrap";
 import { Link, withRouter } from 'react-router-dom';
 import dateFormat from "dateformat";
 import { Loading } from './LoadingComponent';
+import { LocalForm, Errors, Control } from "react-redux-form";
+
+const required = (value) => value && value.length > 0 ;
+const maxlength = (len) => (value) => !(value) || (value.length <= len);
+const isNumber = (value) => !(value) ||!isNaN(Number(value));
 
 class Staff extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      modalOpen: false
+      modalOpen1: false,
+      modalOpen2: false,
+      startDate: '',
+      doB: '',
     }
 
-    this.handleClick = this.handleClick.bind(this);
-    this.setModalOpen = this.setModalOpen.bind(this);
+    this.setModalOpen1 = this.setModalOpen1.bind(this);
+    this.setModalOpen2 = this.setModalOpen2.bind(this);
     this.handleClickNo = this.handleClickNo.bind(this);
     this.handleClickYes = this.handleClickYes.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
+    this.setdoB = this.setdoB.bind(this);
+    this.setstartDate = this.setstartDate.bind(this);
   }
 
-  setModalOpen(){
+  // toggle confirm popup
+  setModalOpen1(){
     this.setState({
-      modalOpen: !this.state.modalOpen
+      modalOpen1: !this.state.modalOpen1
     })
   }
 
+  // toggle edit popup
+  setModalOpen2(){
+    this.setState({
+      modalOpen2: !this.state.modalOpen2
+    })
+  }
+
+  // handle click no on confirm popup
   handleClickNo(){
-    this.setModalOpen();
+    this.setModalOpen1();
   }
 
+  // handle click yes on confirm popup
   handleClickYes(staff){
-    // console.log(this.props.deleteStaff);
-    //this.props.deleteStaff(staff.id);
     this.props.delStaff(staff.id);
-    
-    // this.setModalOpen();
-    // console.log("staffId: " + staff.id);
     this.props.history.push("/")
-    console.log(this.props.history, this.props.history.location.pathname )
-   // this.props.history.push('/');
+    // console.log(this.props.history, this.props.history.location.pathname )
   }
 
-  handleClick(staff) {
-    console.log("nhan vien" + staff.id + staff.name);
-    alert("Xóa nhân viên " + staff.name + ", mã nhân viên " + staff.id + "?")
+  //setdoB
+  setdoB(value) {
+    this.setState({
+      doB: value
+    })
+  }
+
+  //setstartDate
+  setstartDate(value) {
+    this.setState({
+      startDate: value
+    })
+  }
+
+  // edit staff info
+  handleSubmitEdit(values) {
+    console.log(values);
+    const isoDate = new Date().toISOString();
+    const newTime = isoDate.slice(10);
+    const timedDoB = this.state.doB.concat(newTime);
+    const timedStartDate = this.state.startDate.concat(newTime);
+
+    this.props.editStaff(this.props.staffSelected.id, values.name, timedDoB, timedStartDate, values.departmentId, values.salaryScale, values.annualLeave, values.overTime);
+    this.setModalOpen2();
   }
 
   // render staff information in case a staff is selected, return empty div if none is selected
@@ -71,9 +107,16 @@ class Staff extends Component {
           <p>Số ngày đã làm thêm: {staff.overTime}</p>
           <Button
             className="btn btn-primary mt-2"
-            onClick={this.setModalOpen}
+            onClick={this.setModalOpen1}
           >
             Xóa nhân viên
+          </Button>
+
+          <Button
+            className="btn btn-primary mt-2 ml-1"
+            onClick={this.setModalOpen2}
+          >
+            Sửa thông tin
           </Button>
         </div>
       </div>
@@ -84,6 +127,12 @@ class Staff extends Component {
     let rendered = <div></div>;
     let name = <div></div>;
     console.log(this.props.staffSelected);
+
+    const oldDoB = this.props.staffSelected ? this.props.staffSelected.doB.slice(0, 10) : '';
+    const oldStartDate = this.props.staffSelected ? this.props.staffSelected.startDate.slice(0, 10) : '';
+
+    console.log(oldDoB, oldStartDate);
+
     if (this.props.isLoading) {
       return (
         <div className="container">
@@ -130,19 +179,197 @@ class Staff extends Component {
           </Link>
         </div>
 
+        {/* Confirm popup */}
         <div>
         <Modal
-          isOpen={this.state.modalOpen}
-          toggle={this.setModalOpen}
+          isOpen={this.state.modalOpen1}
+          toggle={this.setModalOpen1}
         >
-          <ModalHeader isOpen={this.state.modalOpen}
-          toggle={this.setModalOpen}>Xóa nhân viên {this.props.staffSelected.name}, mã nhân viên {this.props.staffSelected.id} ?</ModalHeader>
+          <ModalHeader isOpen={this.state.modalOpen1}
+          toggle={this.setModalOpen1}>Xóa nhân viên {this.props.staffSelected.name}, mã nhân viên {this.props.staffSelected.id} ?</ModalHeader>
           <ModalBody>
             
             <button className="btn btn-info mt-1" onClick={() => this.handleClickYes(this.props.staffSelected)}>Xóa</button> <button className="btn btn-info mt-1 ml-1" onClick={this.handleClickNo}>Không</button>
           </ModalBody>
         </Modal>
       </div>
+
+      {/* Edit popup */}
+      <div>
+        <Modal
+          isOpen={this.state.modalOpen2}
+          toggle={this.setModalOpen2}
+        >
+          <ModalHeader
+            isOpen={this.state.modalOpen12}
+            toggle={this.setModalOpen2}
+          >
+            Thêm nhân viên
+          </ModalHeader>
+          <ModalBody>
+            <LocalForm
+              onSubmit={(values) => this.handleSubmitEdit(values)}
+            >
+              <Row className="mt-2">
+                <Label htmlFor="name" md={3}>
+                  Tên nhân viên
+                </Label>
+                <Col md={9}>
+                  <Control.text
+                    model=".name"
+                    id="name"
+                    name="name"
+                    className="form-control"
+                    validators={{ required, maxLength: maxlength(15) }}
+                    defaultValue={this.props.staffSelected.name}
+                  ></Control.text>
+                  <Errors
+                    model=".name"
+                    show={(field) => field.touched && !field.focus}
+                    messages={{
+                      required: "Yêu cầu nhập.",
+                      maxLength: "Hãy nhập dưới 15 ký tự.",
+                    }}
+                    className="text-danger"
+                  />
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Label htmlFor="doB" md={3}>
+                  Ngày sinh
+                </Label>
+                <Col md={9}>
+                  <Input
+                    type="date"
+                    id="doB"
+                    name="doB"
+                    onChange={(event) => {
+                      return this.setdoB(event.target.value);
+                    }}
+                    defaultValue={oldDoB}
+                  ></Input>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Label htmlFor="startDate" md={3}>
+                  Ngày bắt đầu
+                </Label>
+                <Col md={9}>
+                  <Input
+                    type="date"
+                    id="startDate"
+                    name="startDate"
+                    onChange={(event) => {
+                      return this.setstartDate(event.target.value);
+                    }}
+                    defaultValue={oldStartDate}
+                  ></Input>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Label htmlFor="departmentId" md={3}>
+                  Phòng ban
+                </Label>
+                <Col md={9}>
+                  <Control.select
+                    model=".departmentId"
+                    id="departmentId"
+                    name="departmentId"
+                    className="form-control"
+                    defaultValue={this.props.staffSelected.departmentId}
+                  >
+                    <option value="Dept01">Sale</option>
+                    <option value="Dept02">HR</option>
+                    <option value="Dept03">Marketing</option>
+                    <option value="Dept04">IT</option>
+                    <option value="Dept05">Finance</option>
+                  </Control.select>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Label htmlFor="salaryScale" md={3}>
+                  Hệ số lương 
+                </Label>
+                <Col md={9}>
+                  <Control.text
+                    model=".salaryScale"
+                    id="salaryScale"
+                    name="salaryScale"
+                    className="form-control"
+                    validators={{ required, isNumber }}
+                    defaultValue={this.props.staffSelected.salaryScale}
+                  ></Control.text>
+                  <Errors
+                    model=".salaryScale"
+                    show={(field) => field.touched && !field.focus}
+                    messages={{
+                      required: "Yêu cầu nhập.",
+                      isNumber: "Hãy nhập số.",
+                    }}
+                    className="text-danger"
+                  ></Errors>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Label htmlFor="annualLeave" md={3}>
+                  Nghỉ phép
+                </Label>
+                <Col md={9}>
+                  <Control.text
+                    model=".annualLeave"
+                    id="annualLeave"
+                    name="annualLeave"
+                    className="form-control"
+                    validators={{ required, isNumber }}
+                    defaultValue={this.props.staffSelected.annualLeave}
+                  ></Control.text>
+                  <Errors
+                    model=".annualLeave"
+                    show={(field) => field.touched && !field.focus}
+                    messages={{
+                      required: "Yêu cầu nhập.",
+                      isNumber: "Hãy nhập số.",
+                    }}
+                    className="text-danger"
+                  ></Errors>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Label htmlFor="overTime" md={3}>
+                  Làm thêm giờ
+                </Label>
+                <Col md={9}>
+                  <Control.text
+                    model=".overTime"
+                    id="overTime"
+                    name="overTime"
+                    className="form-control"
+                    validators={{ required, isNumber }}
+                    defaultValue={this.props.staffSelected.overTime}
+                  ></Control.text>
+                  <Errors
+                    model=".overTime"
+                    show={(field) => field.touched && !field.focus}
+                    messages={{
+                      required: "Yêu cầu nhập.",
+                      isNumber: "Hãy nhập số.",
+                    }}
+                    className="text-danger"
+                  ></Errors>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Col md={{ size: 3, offset: 3 }}>
+                  <Button type="submit" className="btn btn-info">
+                    Sửa thông tin
+                  </Button>
+                </Col>
+              </Row>
+            </LocalForm>
+          </ModalBody>
+        </Modal>
+        </div>
+      
       </div>
     );
   }

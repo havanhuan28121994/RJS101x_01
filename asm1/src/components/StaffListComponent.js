@@ -40,24 +40,6 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
 
   // render full staff list
   const STAFFS = staffs.map((staff) => {
-    if (isLoading) {
-      return (
-        <div className="container">
-          <div className="row">
-            <Loading />
-          </div>
-        </div>
-      )
-    } else if (errMes != null) {
-      return (
-        <div className="container">
-          <div className="row">
-            {errMes}
-          </div>
-        </div>
-      )
-    }
-
     return (
       <Link
         to={`/staff/${staff.id}`}

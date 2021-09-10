@@ -90,6 +90,7 @@ class Main extends Component {
       return (
         <Staff
           delStaff={this.props.delStaff}
+          editStaff={this.props.editStaff}
           departments={this.props.departments.departments}
           staffSelected={staffSelected}
           department={this.props.departments.departments}
