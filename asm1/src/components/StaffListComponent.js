@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardImg,
@@ -15,7 +15,6 @@ import {
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors} from 'react-redux-form';
 import { Loading } from "./LoadingComponent";
-import { DateTimePicker } from 'react-datetime-picker'
 
 // form validation 
 const required = (value) => value && value.length > 0 ;
@@ -33,10 +32,6 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
 
   // set state to toggle add modal
   const [modalOpen, setModalOpen] = useState(false);
-  
-  useEffect(() => {
-    console.log(staffs)
-  }, []);
 
   // render full staff list
   const STAFFS = staffs.map((staff) => {
@@ -45,6 +40,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
         to={`/staff/${staff.id}`}
         className="col col-6 col-md-4 col-lg-2 text-dark mb-2"
         style={{ textDecoration: "none" }}
+        key={staff.id}
       >
         <div key={staff.id}>
           <Card tag="li" className="mt-2 p-1">
@@ -95,8 +91,8 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
 
     const isoDate = new Date().toISOString();
     const newTime = isoDate.slice(10);
-    const timedDoB = doB != '' ? doB.concat(newTime) : null;
-    const timedStartDate = startDate != '' ? startDate.concat(newTime) : null;
+    const timedDoB = doB !== '' ? doB.concat(newTime) : null;
+    const timedStartDate = startDate !== '' ? startDate.concat(newTime) : null;
 
     postStaff(values.name, timedDoB, timedStartDate, values.departmentId, values.salaryScale, values.annualLeave, values.overTime)
    };
@@ -157,7 +153,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
         {isLoading ? <Loading /> 
           : (errMes != null) ? errMes 
           : SEARCH === null ? STAFFS
-          : SEARCH.length == 0 ? "Không tìm thấy nhân viên nào"
+          : SEARCH.length === 0 ? "Không tìm thấy nhân viên nào"
           : SEARCH} 
       </div>
 

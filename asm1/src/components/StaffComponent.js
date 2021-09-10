@@ -61,7 +61,6 @@ class Staff extends Component {
   handleClickYes(staff){
     this.props.delStaff(staff.id);
     this.props.history.push("/")
-    // console.log(this.props.history, this.props.history.location.pathname )
   }
 
   //setdoB
@@ -80,7 +79,6 @@ class Staff extends Component {
 
   // edit staff info
   handleSubmitEdit(values) {
-    console.log(values);
     const isoDate = new Date().toISOString();
     const newTime = isoDate.slice(10);
     const timedDoB = this.state.doB.concat(newTime);
@@ -92,12 +90,11 @@ class Staff extends Component {
 
   // render staff information in case a staff is selected, return empty div if none is selected
   renderStaff(staff) {
-    console.log(staff.image);
     const department = this.props.departments.filter(
       (dep) => dep.id === staff.departmentId
     )[0];
     const depName = department ? department.name : '';
-    console.log(department);
+
     return (
       <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)'}}>
       <div className="mb-4 row mt-4">
@@ -137,15 +134,9 @@ class Staff extends Component {
   render() {
     let rendered = <div></div>;
     let name = <div></div>;
-    console.log("nhan vien" + JSON.stringify(this.props.staffSelected));
 
     const oldDoB = this.props.staffSelected ? this.props.staffSelected.doB ? this.props.staffSelected.doB.slice(0, 10) : '' : '';
     const oldStartDate = this.props.staffSelected ? this.props.staffSelected.startDate ? this.props.staffSelected.startDate.slice(0, 10) : '' : '';
-
-    // this.setdoB(oldDoB);
-    // this.setstartDate(oldStartDate);
-
-    console.log(oldDoB, oldStartDate);
 
     if (this.props.isLoading) {
       return (

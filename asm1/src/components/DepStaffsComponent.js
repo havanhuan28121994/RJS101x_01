@@ -4,19 +4,12 @@ import { Link } from 'react-router-dom';
 import { Loading } from "./LoadingComponent";
 
 class DepStaffs extends Component {
-  constructor(props) {
-    super(props);
-  }
 
-  componentDidMount() {
-    console.log(this.props)
-  }
   render() {
     const STAFFS = this.props.depStaffs.depStaffs.map((staff) => {
       return (
         <Link
           to={`/staff/${staff.id}`}
-          className="col col-6 col-md-4 col-lg-2 text-dark mb-2"
           className="col col-6 col-md-4 col-lg-2 text-dark mb-2"
           style={{ textDecoration: "none" }}
         >

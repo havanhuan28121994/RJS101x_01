@@ -1,5 +1,4 @@
 import * as ActionType from './ActionType';
-import { DEPARTMENTS } from "../shared/staffs";
 import { baseUrl } from './baseUrl';
 
 

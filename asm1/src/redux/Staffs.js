@@ -39,7 +39,7 @@ const Staffs = (state = { isLoading: true, errMes: null, staffs: []}, action) =>
         .then(response => {response.json(); console.log(response)})
         .catch(error => { alert("Try again") ; console.log(error.message)})
 
-        const newList = state.staffs.filter((staff) => (staff.id != id));
+        const newList = state.staffs.filter((staff) => (staff.id !== id));
         return {...state, isLoading: false, errMes: null, staffs: newList}
     case ActionType.EDIT_STAFF:
         var editStaff = action.payload;

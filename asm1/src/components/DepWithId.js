@@ -14,9 +14,6 @@ const mapStateToProps = state => {
   });
 
 class DepWithId extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount(){
       const id = this.props.match.match.params.id;

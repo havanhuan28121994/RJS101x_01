@@ -9,9 +9,6 @@ import {
 import { Link } from "react-router-dom";
 import { Loading } from "./LoadingComponent";
 
-const basicSalary = 3000000;
-const overTimeSalary = 200000;
-
 // function to compare salary to sort staff array
 function compare(a, b) {
   const salaryA = a.salary;
@@ -44,7 +41,6 @@ class SalaryList extends Component {
 
   // render sorted array when sort is not null
   rendersalary(sort) {
-    console.log(sort);
     if (sort === 1) {
       return this.props.staffsSalaries.sort(compare).map((staff) => {
         return (

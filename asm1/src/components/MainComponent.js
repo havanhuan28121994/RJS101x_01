@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -72,9 +72,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     this.props.fetchStaffs();
