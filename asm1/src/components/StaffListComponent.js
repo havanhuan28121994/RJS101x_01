@@ -95,8 +95,8 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
 
     const isoDate = new Date().toISOString();
     const newTime = isoDate.slice(10);
-    const timedDoB = doB.concat(newTime);
-    const timedStartDate = startDate.concat(newTime);
+    const timedDoB = doB != '' ? doB.concat(newTime) : null;
+    const timedStartDate = startDate != '' ? startDate.concat(newTime) : null;
 
     postStaff(values.name, timedDoB, timedStartDate, values.departmentId, values.salaryScale, values.annualLeave, values.overTime)
    };

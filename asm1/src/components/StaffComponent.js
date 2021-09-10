@@ -29,6 +29,14 @@ class Staff extends Component {
     this.setstartDate = this.setstartDate.bind(this);
   }
 
+  componentDidMount(){
+    const oldDoB = this.props.staffSelected ? this.props.staffSelected.doB ? this.props.staffSelected.doB.slice(0, 10) : '' : '';
+    const oldStartDate = this.props.staffSelected ? this.props.staffSelected.startDate ? this.props.staffSelected.startDate.slice(0, 10) : '' : '';
+
+    this.setdoB(oldDoB);
+    this.setstartDate(oldStartDate);
+  }
+
   // toggle confirm popup
   setModalOpen1(){
     this.setState({
@@ -100,8 +108,8 @@ class Staff extends Component {
           <h5>Họ và tên: {staff.name}</h5>
 
           {/* Format date to more easy-to-read date format */}
-          <p>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</p>
-          <p>Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}</p>
+          <p>Ngày sinh: {staff.doB ? dateFormat(staff.doB, "dd/mm/yyyy") : 'N/A'}</p>
+          <p>Ngày vào công ty: {staff.startDate ? dateFormat(staff.startDate, "dd/mm/yyyy") : 'N/A'}</p>
           <p>Phòng ban: { depName }</p>
           <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
           <p>Số ngày đã làm thêm: {staff.overTime}</p>
@@ -126,10 +134,13 @@ class Staff extends Component {
   render() {
     let rendered = <div></div>;
     let name = <div></div>;
-    console.log(this.props.staffSelected);
+    console.log("nhan vien" + JSON.stringify(this.props.staffSelected));
 
-    const oldDoB = this.props.staffSelected ? this.props.staffSelected.doB.slice(0, 10) : '';
-    const oldStartDate = this.props.staffSelected ? this.props.staffSelected.startDate.slice(0, 10) : '';
+    const oldDoB = this.props.staffSelected ? this.props.staffSelected.doB ? this.props.staffSelected.doB.slice(0, 10) : '' : '';
+    const oldStartDate = this.props.staffSelected ? this.props.staffSelected.startDate ? this.props.staffSelected.startDate.slice(0, 10) : '' : '';
+
+    // this.setdoB(oldDoB);
+    // this.setstartDate(oldStartDate);
 
     console.log(oldDoB, oldStartDate);
 
