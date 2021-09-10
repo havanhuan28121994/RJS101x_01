@@ -60,8 +60,10 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
       .filter((staff) => {
         if (name === "") {
           return staff;
-        } else if (staff.name.toLowerCase().includes(name.toLowerCase())) {
+        } else {
+          if (staff.name.toLowerCase().includes(name.toLowerCase())) {
           return staff;
+          }
         }
       })
       .map((staff) => {
@@ -70,6 +72,7 @@ const StaffList = ({ staffs, postStaff, isLoading, errMes }) => {
             to={`/staff/${staff.id}`}
             className="col col-6 col-md-4 col-lg-2 text-dark mb-2"
             style={{ textDecoration: "none" }}
+            key={staff.id}
           >
             <div key={staff.id}>
               <Card tag="li" className="mt-2 p-1">

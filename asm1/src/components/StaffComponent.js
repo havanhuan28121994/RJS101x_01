@@ -81,8 +81,9 @@ class Staff extends Component {
   handleSubmitEdit(values) {
     const isoDate = new Date().toISOString();
     const newTime = isoDate.slice(10);
-    const timedDoB = this.state.doB.concat(newTime);
-    const timedStartDate = this.state.startDate.concat(newTime);
+
+    const timedDoB = this.state.doB !== '' ? this.state.doB.concat(newTime) : null;
+    const timedStartDate = this.state.startDate !== '' ? this.state.startDate.concat(newTime) : null;
 
     this.props.editStaff(this.props.staffSelected.id, values.name, timedDoB, timedStartDate, values.departmentId, values.salaryScale, values.annualLeave, values.overTime);
     this.setModalOpen2();
