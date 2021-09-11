@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardImg, CardTitle, CardText } from 'reactstrap';
-import dateFormat from 'dateformat';
 
 class DishDetail extends Component {
   render() {
