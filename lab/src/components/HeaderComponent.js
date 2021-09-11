@@ -10,7 +10,6 @@ class Header extends Component {
           isNavOpen: false
         };
         this.toggleNav = this.toggleNav.bind(this);
-
       }
 
       toggleNav() {
