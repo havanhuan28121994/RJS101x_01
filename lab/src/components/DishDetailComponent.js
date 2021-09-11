@@ -4,13 +4,13 @@ import dateFormat from 'dateformat';
 
 class DishDetail extends Component {
   render() {
-    if (this.props.selectedDish !== null) {
-        const dish = this.props.selectedDish;
+    if (typeof this.props.dish !== 'undefined') {
+        const dish = this.props.dish;
         const comments = dish.comments.map((comment) => {
             return (
                 <div key={comment.id}>
                     <p>{comment.comment}</p>
-                    <p>-- {comment.author}, {dateFormat(comment.date, "dd/mm/yyyy")}</p>
+                    <p>-- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
                 </div>
             )
         })
