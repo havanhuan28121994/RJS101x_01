@@ -3,6 +3,18 @@ import { Control, LocalForm } from 'react-redux-form';
 import { Col, Row, ModalBody, Modal, Label, Button, ModalHeader } from 'reactstrap';
 
 class CommentForm extends Component{
+
+  constructor(props){
+    super(props)
+
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit(values){
+    console.log(values);
+    alert(JSON.stringify(values))
+  }
+
     render(){
         return (
           <Modal
@@ -16,7 +28,7 @@ class CommentForm extends Component{
               Submit comment
             </ModalHeader>
             <ModalBody>
-              <LocalForm>
+              <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                 <Row className="form-group">
                   <Label htmlFor="rating" md={2}>
                     Rating
