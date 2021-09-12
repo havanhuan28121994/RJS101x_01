@@ -135,7 +135,7 @@ class Staff extends Component {
   render() {
     let rendered = <div></div>;
     let name = <div></div>;
-
+    
     const oldDoB = this.props.staffSelected ? this.props.staffSelected.doB ? this.props.staffSelected.doB.slice(0, 10) : '' : '';
     const oldStartDate = this.props.staffSelected ? this.props.staffSelected.startDate ? this.props.staffSelected.startDate.slice(0, 10) : '' : '';
 
@@ -302,14 +302,13 @@ class Staff extends Component {
                     id="salaryScale"
                     name="salaryScale"
                     className="form-control"
-                    validators={{ required, isNumber }}
+                    validators={{ isNumber }}
                     defaultValue={this.props.staffSelected.salaryScale}
                   ></Control.text>
                   <Errors
                     model=".salaryScale"
                     show={(field) => field.touched && !field.focus}
                     messages={{
-                      required: "Yêu cầu nhập.",
                       isNumber: "Hãy nhập số.",
                     }}
                     className="text-danger"
@@ -326,14 +325,13 @@ class Staff extends Component {
                     id="annualLeave"
                     name="annualLeave"
                     className="form-control"
-                    validators={{ required, isNumber }}
+                    validators={{ isNumber }}
                     defaultValue={this.props.staffSelected.annualLeave}
                   ></Control.text>
                   <Errors
                     model=".annualLeave"
                     show={(field) => field.touched && !field.focus}
                     messages={{
-                      required: "Yêu cầu nhập.",
                       isNumber: "Hãy nhập số.",
                     }}
                     className="text-danger"
@@ -350,14 +348,13 @@ class Staff extends Component {
                     id="overTime"
                     name="overTime"
                     className="form-control"
-                    validators={{ required, isNumber }}
+                    validators={{ isNumber }}
                     defaultValue={this.props.staffSelected.overTime}
                   ></Control.text>
                   <Errors
                     model=".overTime"
                     show={(field) => field.touched && !field.focus}
                     messages={{
-                      required: "Yêu cầu nhập.",
                       isNumber: "Hãy nhập số.",
                     }}
                     className="text-danger"
