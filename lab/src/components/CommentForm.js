@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { Control, LocalForm } from 'react-redux-form';
+import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Col, Row, ModalBody, Modal, Label, Button, ModalHeader } from 'reactstrap';
+
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
 
 class CommentForm extends Component{
 
@@ -58,7 +62,17 @@ class CommentForm extends Component{
                       id="name"
                       name="name"
                       className="form-control"
+                      validators={{ required, minLength: minLength(3), maxLength: maxLength(15)}}
                     />
+                    <Errors
+                    className="text-danger"
+                    model=".name"
+                    show="touched"
+                    messages={{
+                      required: 'required',
+                      minLength: "Must be greater than 3 characters",
+                      maxLength: "Must be 15 characters or less"
+                    }}></Errors>
                   </Col>
                 </Row>
                 <Row className="form-group">
