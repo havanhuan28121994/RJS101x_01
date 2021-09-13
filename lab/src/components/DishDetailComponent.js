@@ -78,7 +78,7 @@ const DishDetail = (props) => {
                         <Button outline onClick={() => setModalOpen(!isModalOpen)} className="bg-light">
                             <span className="fa fa-sign-in fa-lg"></span> Submit comment
                         </Button>
-                        <CommentForm isModalOpen={isModalOpen} setModalOpen={setModalOpen} dishId={props.dish.id} addComment={props.addComment} />
+                        <CommentForm isModalOpen={isModalOpen} setModalOpen={setModalOpen} dishId={props.dish.id} postComment={props.postComment} />
                     </div>
                 </div>
             </div>
